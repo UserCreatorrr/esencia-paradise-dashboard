@@ -2,5 +2,5 @@
   "name": "esencia-paradise-dashboard",
   "version": "1.0.0",
   "description": "Event Analytics Dashboard for Esencia Paradise",
-  "engines": { "node": "18.x" }
+  "engines": { "node": "24.x" }
 }
