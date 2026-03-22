@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esencia Paradise — Event Dashboard</title>
+<link rel="icon" href="https://esenciaparadise.com/wp-content/uploads/2025/10/IMG_6016.png">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07070f;--sidebar:#0c0c1a;--card:#111125;--card2:#161630;
+  --border:#1e1e3a;--primary:#7c3aed;--primary-light:#a78bfa;
+  --secondary:#ec4899;--cyan:#06b6d4;--green:#10b981;
+  --amber:#f59e0b;--red:#ef4444;--orange:#f97316;
+  --text:#f1f5f9;--text2:#94a3b8;--text3:#475569;
+  --sidebar-w:240px;
+}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* LAYOUT */
+.layout{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;z-index:10}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:var(--sidebar);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.content{flex:1;overflow-y:auto;padding:24px}
+
+/* SIDEBAR */
+.sidebar-logo{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
+.sidebar-logo img{width:100%;max-height:56px;object-fit:contain}
+.sidebar-logo .app-name{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-top:8px;text-align:center}
+.nav-section{padding:16px 8px 8px;font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;padding-left:12px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:2px 8px;border-radius:8px;cursor:pointer;color:var(--text2);font-weight:500;font-size:13px;transition:all .2s}
+.nav-item i{width:16px;text-align:center;font-size:13px}
+.nav-item:hover{background:var(--card2);color:var(--text)}
+.nav-item.active{background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(236,72,153,.15));color:var(--primary-light);border:1px solid rgba(124,58,237,.3)}
+.sidebar-bottom{margin-top:auto;padding:16px;border-top:1px solid var(--border)}
+.sync-info{font-size:11px;color:var(--text3);text-align:center}
+.sync-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 2s infinite}
+.sync-dot.error{background:var(--red);animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* TOPBAR */
+.topbar-left h1{font-size:18px;font-weight:700;background:linear-gradient(135deg,#a78bfa,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.topbar-left .sub{font-size:12px;color:var(--text2);margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px)}
+.btn-ghost{background:var(--card2);color:var(--text2);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--text);border-color:var(--primary)}
+.status-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.status-badge.ok{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.status-badge.err{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.status-badge.loading{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+
+/* TABS */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* SECTION TITLE */
+.section-title{font-size:20px;font-weight:800;margin-bottom:4px}
+.section-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px;margin-bottom:24px}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;overflow:hidden;transition:all .2s}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0}
+.kpi-card.purple::before{background:linear-gradient(90deg,var(--primary),var(--primary-light))}
+.kpi-card.pink::before{background:linear-gradient(90deg,var(--secondary),#f9a8d4)}
+.kpi-card.cyan::before{background:linear-gradient(90deg,var(--cyan),#67e8f9)}
+.kpi-card.green::before{background:linear-gradient(90deg,var(--green),#6ee7b7)}
+.kpi-card.amber::before{background:linear-gradient(90deg,var(--amber),#fcd34d)}
+.kpi-card.red::before{background:linear-gradient(90deg,var(--red),#fca5a5)}
+.kpi-card.orange::before{background:linear-gradient(90deg,var(--orange),#fdba74)}
+.kpi-card.indigo::before{background:linear-gradient(90deg,#6366f1,#a5b4fc)}
+.kpi-card:hover{border-color:var(--primary);transform:translateY(-2px)}
+.kpi-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px}
+.kpi-icon.purple{background:rgba(124,58,237,.2);color:var(--primary-light)}
+.kpi-icon.pink{background:rgba(236,72,153,.2);color:#f9a8d4}
+.kpi-icon.cyan{background:rgba(6,182,212,.2);color:var(--cyan)}
+.kpi-icon.green{background:rgba(16,185,129,.2);color:var(--green)}
+.kpi-icon.amber{background:rgba(245,158,11,.2);color:var(--amber)}
+.kpi-icon.red{background:rgba(239,68,68,.2);color:var(--red)}
+.kpi-icon.orange{background:rgba(249,115,22,.2);color:var(--orange)}
+.kpi-icon.indigo{background:rgba(99,102,241,.2);color:#a5b4fc}
+.kpi-value{font-size:26px;font-weight:800;line-height:1}
+.kpi-label{font-size:11px;color:var(--text2);margin-top:4px;font-weight:500}
+.kpi-change{font-size:11px;margin-top:6px;font-weight:600}
+.kpi-change.up{color:var(--green)}
+.kpi-change.down{color:var(--red)}
+
+/* CHART CARDS */
+.chart-grid{display:grid;gap:14px;margin-bottom:24px}
+.chart-grid-2{grid-template-columns:1fr 1fr}
+.chart-grid-3{grid-template-columns:1fr 1fr 1fr}
+.chart-grid-21{grid-template-columns:2fr 1fr}
+.chart-grid-12{grid-template-columns:1fr 2fr}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.chart-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.chart-card-title{font-size:14px;font-weight:700}
+.chart-card-sub{font-size:11px;color:var(--text2);margin-top:1px}
+.chart-wrapper{position:relative}
+
+/* DATA TABLE */
+.data-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px}
+.table-controls{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap}
+.table-controls h3{font-size:14px;font-weight:700}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:6px 10px}
+.search-box input{background:none;border:none;outline:none;color:var(--text);font-size:13px;width:200px}
+.search-box input::placeholder{color:var(--text3)}
+.search-box i{color:var(--text3);font-size:12px}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.7px;background:var(--card2);border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap;user-select:none}
+.data-table th:hover{color:var(--text)}
+.data-table td{padding:10px 12px;border-bottom:1px solid rgba(30,30,58,.6);font-size:13px;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.data-table tr:hover td{background:rgba(124,58,237,.05)}
+.data-table tr:last-child td{border-bottom:none}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-green{background:rgba(16,185,129,.15);color:var(--green)}
+.badge-red{background:rgba(239,68,68,.15);color:var(--red)}
+.badge-amber{background:rgba(245,158,11,.15);color:var(--amber)}
+.badge-purple{background:rgba(124,58,237,.15);color:var(--primary-light)}
+.badge-cyan{background:rgba(6,182,212,.15);color:var(--cyan)}
+.badge-gray{background:rgba(148,163,184,.1);color:var(--text2)}
+.table-footer{padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);font-size:12px;color:var(--text2)}
+.pagination{display:flex;gap:4px}
+.page-btn{padding:4px 10px;border-radius:6px;cursor:pointer;background:var(--card2);border:1px solid var(--border);color:var(--text2);font-size:12px}
+.page-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.page-btn:hover:not(.active){border-color:var(--primary);color:var(--primary-light)}
+
+/* PROMOTOR RANK */
+.rank-table{width:100%}
+.rank-row{display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid rgba(30,30,58,.5)}
+.rank-row:last-child{border-bottom:none}
+.rank-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.rank-1{background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000}
+.rank-2{background:linear-gradient(135deg,#c0c0c0,#808080);color:#000}
+.rank-3{background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff}
+.rank-other{background:var(--card2);color:var(--text2)}
+.rank-name{font-weight:600;font-size:13px}
+.rank-code{font-size:11px;color:var(--text2)}
+.rank-value{font-weight:700;font-size:14px;color:var(--primary-light)}
+
+/* LOADING OVERLAY */
+.loading-overlay{position:fixed;inset:0;background:rgba(7,7,15,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;transition:opacity .4s}
+.loading-overlay.hidden{opacity:0;pointer-events:none}
+.spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;color:var(--text2);font-weight:500}
+
+/* FUNNEL */
+.funnel{display:flex;flex-direction:column;gap:8px;padding:8px 0}
+.funnel-step{display:flex;align-items:center;gap:12px}
+.funnel-bar-wrap{flex:1;background:var(--card2);border-radius:4px;height:28px;overflow:hidden;position:relative}
+.funnel-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:10px;font-size:12px;font-weight:700;color:#fff;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.funnel-label{width:130px;font-size:12px;color:var(--text2);font-weight:500;text-align:right}
+.funnel-count{width:60px;font-size:13px;font-weight:700;color:var(--text);text-align:right}
+
+/* PROGRESS BAR */
+.prog-item{margin-bottom:12px}
+.prog-header{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.prog-name{font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.prog-val{font-weight:700;color:var(--primary-light)}
+.prog-bar-wrap{background:var(--card2);border-radius:4px;height:6px;overflow:hidden}
+.prog-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+/* STAT ROW */
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(30,30,58,.5)}
+.stat-row:last-child{border-bottom:none}
+.stat-label{font-size:12px;color:var(--text2)}
+.stat-val{font-size:13px;font-weight:700}
+
+/* UPLOAD AREA */
+.upload-area{border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px}
+.upload-area:hover,.upload-area.drag{border-color:var(--primary);background:rgba(124,58,237,.05)}
+.upload-area i{font-size:32px;color:var(--primary-light);margin-bottom:8px}
+.upload-area p{font-size:13px;color:var(--text2)}
+.upload-area small{font-size:11px;color:var(--text3)}
+
+/* FILTERS */
+.filter-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-select{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:12px;outline:none;cursor:pointer}
+.filter-select:focus{border-color:var(--primary)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .sidebar{display:none}
+  .chart-grid-2,.chart-grid-3,.chart-grid-21,.chart-grid-12{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:500px){
+  .kpi-grid{grid-template-columns:1fr}
+  .content{padding:12px}
+}
+
+/* TIMELINE BADGE */
+.timeline-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(124,58,237,.15);color:var(--primary-light)}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:48px 24px;color:var(--text2)}
+.empty-state i{font-size:40px;margin-bottom:12px;color:var(--text3)}
+.empty-state p{font-size:14px}
+
+/* TOOLTIP CUSTOM */
+.tooltip-custom{position:absolute;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;pointer-events:none;z-index:50;white-space:nowrap}
+
+/* GRID COL SPANS */
+.col-span-2{grid-column:span 2}
+.col-span-3{grid-column:span 3}
+
+/* HIGHLIGHT NUMBER */
+.hl{color:var(--primary-light);font-weight:700}
+.hl-g{color:var(--green);font-weight:700}
+.hl-r{color:var(--red);font-weight:700}
+.hl-a{color:var(--amber);font-weight:700}
+
+</style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Conectando con n8n...</div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://esenciaparadise.com/wp-content/uploads/2025/10/IMG_6016.png" alt="Esencia Paradise" onerror="this.style.display='none'">
+      <div class="app-name">Event Analytics</div>
+    </div>
+    <div class="nav-section">Principal</div>
+    <div class="nav-item active" onclick="showTab('overview')"><i class="fas fa-chart-pie"></i> Overview</div>
+    <div class="nav-item" onclick="showTab('sales')"><i class="fas fa-euro-sign"></i> Ventas & Ingresos</div>
+    <div class="nav-item" onclick="showTab('promotores')"><i class="fas fa-users"></i> Promotores</div>
+    <div class="nav-section">Análisis</div>
+    <div class="nav-item" onclick="showTab('leads')"><i class="fas fa-funnel-dollar"></i> Leads & Formulario</div>
+    <div class="nav-item" onclick="showTab('demographics')"><i class="fas fa-venus-mars"></i> Demografía</div>
+    <div class="nav-item" onclick="showTab('geography')"><i class="fas fa-globe-europe"></i> Geografía</div>
+    <div class="nav-item" onclick="showTab('tickets')"><i class="fas fa-ticket-alt"></i> Tickets</div>
+    <div class="nav-section">Datos</div>
+    <div class="nav-item" onclick="showTab('rawdata')"><i class="fas fa-table"></i> Datos Raw</div>
+    <div class="nav-item" onclick="showTab('upload')"><i class="fas fa-upload"></i> Cargar CSV</div>
+    <div class="sidebar-bottom">
+      <div class="sync-info"><span class="sync-dot" id="syncDot"></span><span id="syncText">Sincronizando...</span></div>
+      <div style="margin-top:6px;font-size:10px;color:var(--text3);text-align:center" id="lastSync">—</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1>Esencia Paradise Dashboard</h1>
+        <div class="sub">Panel de análisis del evento en tiempo real</div>
+      </div>
+      <div class="topbar-right">
+        <span class="status-badge loading" id="statusBadge"><i class="fas fa-circle"></i> <span id="statusText">Cargando</span></span>
+        <button class="btn btn-ghost" onclick="refreshData()"><i class="fas fa-sync-alt" id="refreshIcon"></i> Actualizar</button>
+        <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i> Exportar</button>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- ====== OVERVIEW ====== -->
+      <div class="tab-panel active" id="tab-overview">
+        <div class="section-title">Overview General</div>
+        <div class="section-sub">Resumen completo del evento en tiempo real</div>
+        <div class="kpi-grid" id="kpiGrid">
+          <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-shopping-cart"></i></div><div class="kpi-value" id="kpi-totalVentas">—</div><div class="kpi-label">Total Ventas</div></div>
+          <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-euro-sign"></i></div><div class="kpi-value" id="kpi-totalIngresos">—</div><div class="kpi-label">Ingresos Totales</div></div>
+          <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-ticket-alt"></i></div><div class="kpi-value" id="kpi-ticketsActivos">—</div><div class="kpi-label">Tickets Activos</div></div>
+          <div class="kpi-card pink"><div class="kpi-icon pink"><i class="fas fa-star"></i></div><div class="kpi-value" id="kpi-promotoresActivos">—</div><div class="kpi-label">Promotores Activos</div></div>
+          <div class="kpi-card amber"><div class="kpi-icon amber"><i class="fas fa-file-alt"></i></div><div class="kpi-value" id="kpi-totalLeads">—</div><div class="kpi-label">Leads Formulario</div></div>
+          <div class="kpi-card indigo"><div class="kpi-icon indigo"><i class="fas fa-percentage"></i></div><div class="kpi-value" id="kpi-conversion">—</div><div class="kpi-label">Tasa Conversión</div></div>
+          <div class="kpi-card orange"><div class="kpi-icon orange"><i class="fas fa-chart-line"></i></div><div class="kpi-value" id="kpi-avgPrice">—</div><div class="kpi-label">Precio Medio</div></div>
+          <div class="kpi-card red"><div class="kpi-icon red"><i class="fas fa-undo"></i></div><div class="kpi-value" id="kpi-totalRefunds">—</div><div class="kpi-label">Reembolsos</div></div>
+        </div>
+        <div class="chart-grid chart-grid-21">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Ventas Diarias</div><div class="chart-card-sub">Tickets vendidos por día</div></div></div>
+            <div class="chart-wrapper" style="height:220px"><canvas id="chartSalesByDay"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Tipo de Venta</div><div class="chart-card-sub">Distribución del canal</div></div></div>
+            <div class="chart-wrapper" style="height:220px"><canvas id="chartSaleType"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-grid chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Top 10 Promotores</div><div class="chart-card-sub">Por número de ventas</div></div></div>
+            <div class="chart-wrapper" style="height:250px"><canvas id="chartTopPromoters"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Tickets por Tipo</div><div class="chart-card-sub">Distribución de entradas</div></div></div>
+            <div class="chart-wrapper" style="height:250px"><canvas id="chartTicketTypes"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== SALES ====== -->
+      <div class="tab-panel" id="tab-sales">
+        <div class="section-title">Ventas & Ingresos</div>
+        <div class="section-sub">Análisis completo de facturación y rendimiento comercial</div>
+        <div class="kpi-grid">
+          <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-euro-sign"></i></div><div class="kpi-value" id="kpi-s-total">—</div><div class="kpi-label">Ingresos Totales</div></div>
+          <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-shopping-cart"></i></div><div class="kpi-value" id="kpi-s-ventas">—</div><div class="kpi-label">Ventas</div></div>
+          <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-chart-bar"></i></div><div class="kpi-value" id="kpi-s-online">—</div><div class="kpi-label">Ventas Online</div></div>
+          <div class="kpi-card amber"><div class="kpi-icon amber"><i class="fas fa-handshake"></i></div><div class="kpi-value" id="kpi-s-offline">—</div><div class="kpi-label">Ventas Offline</div></div>
+          <div class="kpi-card pink"><div class="kpi-icon pink"><i class="fas fa-globe"></i></div><div class="kpi-value" id="kpi-s-goandance">—</div><div class="kpi-label">GoAndDance</div></div>
+          <div class="kpi-card orange"><div class="kpi-icon orange"><i class="fas fa-chart-line"></i></div><div class="kpi-value" id="kpi-s-avgTicket">—</div><div class="kpi-label">Ticket Medio</div></div>
+        </div>
+        <div class="chart-grid chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Ingresos Acumulados</div><div class="chart-card-sub">Curva de crecimiento de ingresos</div></div></div>
+            <div class="chart-wrapper" style="height:240px"><canvas id="chartRevenueAccum"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Ingresos por Canal</div><div class="chart-card-sub">Online vs Offline vs GoAndDance</div></div></div>
+            <div class="chart-wrapper" style="height:240px"><canvas id="chartRevenueByChannel"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-grid chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Ingresos por Tipo de Ticket</div><div class="chart-card-sub">Facturación agrupada por categoría</div></div></div>
+            <div class="chart-wrapper" style="height:240px"><canvas id="chartRevenueByTicket"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Precio Medio por Día</div><div class="chart-card-sub">Evolución del ticket medio</div></div></div>
+            <div class="chart-wrapper" style="height:240px"><canvas id="chartAvgPriceByDay"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-card" style="margin-bottom:24px">
+          <div class="chart-card-header"><div><div class="chart-card-title">Ventas por Promotor — Top 20</div><div class="chart-card-sub">Ingresos generados por cada promotor</div></div></div>
+          <div class="chart-wrapper" style="height:320px"><canvas id="chartRevenueByPromoter"></canvas></div>
+        </div>
+      </div>
+
+      <!-- ====== PROMOTORES ====== -->
+      <div class="tab-panel" id="tab-promotores">
+        <div class="section-title">Promotores</div>
+        <div class="section-sub">Rendimiento, comisiones y clasificación de promotores</div>
+        <div class="kpi-grid">
+          <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-users"></i></div><div class="kpi-value" id="kpi-p-total">—</div><div class="kpi-label">Total Promotores</div></div>
+          <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-check-circle"></i></div><div class="kpi-value" id="kpi-p-activos">—</div><div class="kpi-label">Con Ventas</div></div>
+          <div class="kpi-card amber"><div class="kpi-icon amber"><i class="fas fa-coins"></i></div><div class="kpi-value" id="kpi-p-comisiones">—</div><div class="kpi-label">Total Comisiones</div></div>
+          <div class="kpi-card pink"><div class="kpi-icon pink"><i class="fas fa-trophy"></i></div><div class="kpi-value" id="kpi-p-topPromotor">—</div><div class="kpi-label">Top Promotor</div></div>
+          <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-shopping-cart"></i></div><div class="kpi-value" id="kpi-p-totalEntradas">—</div><div class="kpi-label">Entradas Vendidas</div></div>
+          <div class="kpi-card orange"><div class="kpi-icon orange"><i class="fas fa-chart-line"></i></div><div class="kpi-value" id="kpi-p-avgComision">—</div><div class="kpi-label">Comisión Media</div></div>
+        </div>
+        <div class="chart-grid chart-grid-21">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Ranking — Ventas por Promotor</div><div class="chart-card-sub">Top 15 por número de entradas</div></div></div>
+            <div class="chart-wrapper" style="height:350px"><canvas id="chartPromoterRanking"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Podio</div><div class="chart-card-sub">Los mejores promotores</div></div></div>
+            <div id="podiumList" style="max-height:350px;overflow-y:auto"></div>
+          </div>
+        </div>
+        <div class="chart-grid chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Comisiones Totales</div><div class="chart-card-sub">A pagar por promotor (top 15)</div></div></div>
+            <div class="chart-wrapper" style="height:280px"><canvas id="chartPromoterComissions"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Online vs Offline</div><div class="chart-card-sub">Distribución de canal por promotor (top 10)</div></div></div>
+            <div class="chart-wrapper" style="height:280px"><canvas id="chartPromoterChannels"></canvas></div>
+          </div>
+        </div>
+        <div class="data-table-wrap">
+          <div class="table-controls">
+            <h3>Tabla Completa de Promotores</h3>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchPromoters" placeholder="Buscar promotor..." oninput="filterTable('promotoresTable',this.value)"></div>
+              <select class="filter-select" id="filterPromoterStatus" onchange="renderPromotersTable()">
+                <option value="">Todos</option>
+                <option value="conVentas">Con ventas</option>
+                <option value="sinVentas">Sin ventas</option>
+              </select>
+            </div>
+          </div>
+          <div style="overflow-x:auto"><table class="data-table" id="promotoresTable">
+            <thead><tr>
+              <th onclick="sortTable('promotoresTable',0)"># <i class="fas fa-sort"></i></th>
+              <th onclick="sortTable('promotoresTable',1)">Promotor <i class="fas fa-sort"></i></th>
+              <th onclick="sortTable('promotoresTable',2)">Código</th>
+              <th onclick="sortTable('promotoresTable',3)">Entradas <i class="fas fa-sort"></i></th>
+              <th onclick="sortTable('promotoresTable',4)">Importe <i class="fas fa-sort"></i></th>
+              <th onclick="sortTable('promotoresTable',5)">Comisión <i class="fas fa-sort"></i></th>
+              <th onclick="sortTable('promotoresTable',6)">A Pagar</th>
+              <th onclick="sortTable('promotoresTable',7)">Online</th>
+              <th onclick="sortTable('promotoresTable',8)">Offline</th>
+              <th>Estado</th>
+            </tr></thead>
+            <tbody id="promotoresTableBody"></tbody>
+          </table></div>
+          <div class="table-footer"><span id="promotoresTableInfo">—</span><div class="pagination" id="promotoresPagination"></div></div>
+        </div>
+      </div>
+
+      <!-- ====== LEADS ====== -->
+      <div class="tab-panel" id="tab-leads">
+        <div class="section-title">Leads & Formulario</div>
+        <div class="section-sub">Análisis del formulario de registro y conversión</div>
+        <div class="kpi-grid">
+          <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-file-alt"></i></div><div class="kpi-value" id="kpi-l-total">—</div><div class="kpi-label">Total Registros</div></div>
+          <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-check"></i></div><div class="kpi-value" id="kpi-l-comprados">—</div><div class="kpi-label">Han Comprado</div></div>
+          <div class="kpi-card red"><div class="kpi-icon red"><i class="fas fa-times"></i></div><div class="kpi-value" id="kpi-l-noComprado">—</div><div class="kpi-label">No Comprados</div></div>
+          <div class="kpi-card amber"><div class="kpi-icon amber"><i class="fas fa-percentage"></i></div><div class="kpi-value" id="kpi-l-conversion">—</div><div class="kpi-label">Conversión</div></div>
+          <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-code"></i></div><div class="kpi-value" id="kpi-l-conCodigo">—</div><div class="kpi-label">Con Código Promotor</div></div>
+          <div class="kpi-card pink"><div class="kpi-icon pink"><i class="fas fa-instagram"></i></div><div class="kpi-value" id="kpi-l-topFuente">—</div><div class="kpi-label">Top Fuente</div></div>
+        </div>
+        <div class="chart-grid chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Embudo de Conversión</div><div class="chart-card-sub">Del registro a la compra</div></div></div>
+            <div id="funnelChart" style="padding:8px 0"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">¿Cómo nos encontraron?</div><div class="chart-card-sub">Fuentes de descubrimiento</div></div></div>
+            <div class="chart-wrapper" style="height:220px"><canvas id="chartHowFound"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-grid chart-grid-3">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Rol de Baile</div></div></div>
+            <div class="chart-wrapper" style="height:180px"><canvas id="chartDanceRole"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Nivel de Baile</div></div></div>
+            <div class="chart-wrapper" style="height:180px"><canvas id="chartDanceLevel"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Estilos Preferidos</div></div></div>
+            <div class="chart-wrapper" style="height:180px"><canvas id="chartStyles"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-card" style="margin-bottom:24px">
+          <div class="chart-card-header"><div><div class="chart-card-title">Registros por Día</div><div class="chart-card-sub">Evolución de leads en el tiempo</div></div></div>
+          <div class="chart-wrapper" style="height:200px"><canvas id="chartLeadsByDay"></canvas></div>
+        </div>
+        <div class="chart-grid chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Top Códigos de Promotor (Leads)</div><div class="chart-card-sub">Leads por código de promotor</div></div></div>
+            <div id="leadPromoterCodes" style="max-height:280px;overflow-y:auto;padding:4px 0"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Leads por País</div><div class="chart-card-sub">Top países de origen</div></div></div>
+            <div class="chart-wrapper" style="height:280px"><canvas id="chartLeadsCountry"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== DEMOGRAPHICS ====== -->
+      <div class="tab-panel" id="tab-demographics">
+        <div class="section-title">Demografía</div>
+        <div class="section-sub">Perfil de asistentes y leads</div>
+        <div class="chart-grid chart-grid-3">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Género (Registros)</div></div></div>
+            <div class="chart-wrapper" style="height:200px"><canvas id="chartGender"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Rol (Leader/Follower)</div></div></div>
+            <div class="chart-wrapper" style="height:200px"><canvas id="chartRole"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Nivel Baile (Leads)</div></div></div>
+            <div class="chart-wrapper" style="height:200px"><canvas id="chartLevelDemog"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-grid chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Género por Rol</div><div class="chart-card-sub">Leaders vs Followers por género</div></div></div>
+            <div class="chart-wrapper" style="height:260px"><canvas id="chartGenderByRole"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Balance Leader/Follower</div><div class="chart-card-sub">Ratio en el evento</div></div></div>
+            <div style="padding:16px 0" id="leaderFollowerBalance"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== GEOGRAPHY ====== -->
+      <div class="tab-panel" id="tab-geography">
+        <div class="section-title">Geografía</div>
+        <div class="section-sub">Distribución global de asistentes</div>
+        <div class="kpi-grid">
+          <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-globe"></i></div><div class="kpi-value" id="kpi-g-paises">—</div><div class="kpi-label">Países Representados</div></div>
+          <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-city"></i></div><div class="kpi-value" id="kpi-g-ciudades">—</div><div class="kpi-label">Ciudades</div></div>
+          <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-flag"></i></div><div class="kpi-value" id="kpi-g-topPais">—</div><div class="kpi-label">País #1</div></div>
+          <div class="kpi-card pink"><div class="kpi-icon pink"><i class="fas fa-building"></i></div><div class="kpi-value" id="kpi-g-topCiudad">—</div><div class="kpi-label">Ciudad #1</div></div>
+        </div>
+        <div class="chart-grid chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Top 20 Países</div><div class="chart-card-sub">Por número de asistentes</div></div></div>
+            <div class="chart-wrapper" style="height:400px"><canvas id="chartCountries"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Top 20 Ciudades</div></div></div>
+            <div class="chart-wrapper" style="height:400px"><canvas id="chartCities"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-card" style="margin-bottom:24px">
+          <div class="chart-card-header"><div><div class="chart-card-title">Ingresos por País</div><div class="chart-card-sub">Top 15 países por facturación</div></div></div>
+          <div class="chart-wrapper" style="height:280px"><canvas id="chartRevenueByCountry"></canvas></div>
+        </div>
+      </div>
+
+      <!-- ====== TICKETS ====== -->
+      <div class="tab-panel" id="tab-tickets">
+        <div class="section-title">Tickets</div>
+        <div class="section-sub">Análisis de tipos de entrada y estado</div>
+        <div class="kpi-grid">
+          <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-ticket-alt"></i></div><div class="kpi-value" id="kpi-t-total">—</div><div class="kpi-label">Total Tickets</div></div>
+          <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-check-circle"></i></div><div class="kpi-value" id="kpi-t-activos">—</div><div class="kpi-label">Activos</div></div>
+          <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-qrcode"></i></div><div class="kpi-value" id="kpi-t-escaneados">—</div><div class="kpi-label">Escaneados</div></div>
+          <div class="kpi-card amber"><div class="kpi-icon amber"><i class="fas fa-layer-group"></i></div><div class="kpi-value" id="kpi-t-tipos">—</div><div class="kpi-label">Tipos de Ticket</div></div>
+        </div>
+        <div class="chart-grid chart-grid-21">
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Distribución por Tipo de Ticket</div></div></div>
+            <div class="chart-wrapper" style="height:320px"><canvas id="chartTicketDistrib"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-header"><div><div class="chart-card-title">Estado de Tickets</div></div></div>
+            <div class="chart-wrapper" style="height:320px"><canvas id="chartTicketStatus"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-card" style="margin-bottom:24px">
+          <div class="chart-card-header"><div><div class="chart-card-title">Precio por Tipo de Ticket</div><div class="chart-card-sub">Precio medio y volumen</div></div></div>
+          <div class="chart-wrapper" style="height:260px"><canvas id="chartTicketPrice"></canvas></div>
+        </div>
+      </div>
+
+      <!-- ====== RAW DATA ====== -->
+      <div class="tab-panel" id="tab-rawdata">
+        <div class="section-title">Datos Raw</div>
+        <div class="section-sub">Tablas completas con todos los datos</div>
+
+        <!-- REGISTROS TABLE -->
+        <div class="data-table-wrap">
+          <div class="table-controls">
+            <h3>Registros (Ventas)</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Buscar..." oninput="filterTable('registrosTable',this.value)"></div>
+              <select class="filter-select" onchange="filterRegistrosByType(this.value)">
+                <option value="">Todos los canales</option>
+                <option value="promoterOnline">Promoter Online</option>
+                <option value="goandance">GoAndDance</option>
+                <option value="offline">Offline</option>
+              </select>
+            </div>
+          </div>
+          <div style="overflow-x:auto"><table class="data-table" id="registrosTable">
+            <thead><tr>
+              <th>Locator</th><th>Fecha</th><th>Nombre</th><th>Email</th><th>Promotor</th>
+              <th>Canal</th><th>Ticket</th><th>Precio</th><th>Status</th><th>País</th><th>Rol</th>
+            </tr></thead>
+            <tbody id="registrosTableBody"></tbody>
+          </table></div>
+          <div class="table-footer"><span id="registrosTableInfo">—</span><div class="pagination" id="registrosPagination"></div></div>
+        </div>
+
+        <!-- FORMULARIO TABLE -->
+        <div class="data-table-wrap">
+          <div class="table-controls">
+            <h3>Registro Formulario (Leads)</h3>
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Buscar..." oninput="filterTable('formularioTable',this.value)"></div>
+          </div>
+          <div style="overflow-x:auto"><table class="data-table" id="formularioTable">
+            <thead><tr>
+              <th>Nombre</th><th>Email</th><th>País</th><th>Rol Baile</th><th>Nivel</th>
+              <th>Fuente</th><th>Código Promotor</th><th>¿Compró?</th><th>Fecha</th>
+            </tr></thead>
+            <tbody id="formularioTableBody"></tbody>
+          </table></div>
+          <div class="table-footer"><span id="formularioTableInfo">—</span><div class="pagination" id="formularioPagination"></div></div>
+        </div>
+      </div>
+
+      <!-- ====== UPLOAD ====== -->
+      <div class="tab-panel" id="tab-upload">
+        <div class="section-title">Cargar CSV Manualmente</div>
+        <div class="section-sub">Si n8n no está disponible, carga los datos directamente</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px">
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--primary-light)"><i class="fas fa-shopping-cart"></i> Registros (Ventas)</div>
+            <div class="upload-area" onclick="document.getElementById('uploadRegistros').click()" id="uploadAreaRegistros">
+              <i class="fas fa-file-csv"></i>
+              <p>Registros.csv</p>
+              <small>Clic o arrastra el archivo aquí</small>
+            </div>
+            <input type="file" id="uploadRegistros" accept=".csv" style="display:none" onchange="handleCSVUpload('registros',this)">
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--secondary)"><i class="fas fa-users"></i> Promotores</div>
+            <div class="upload-area" onclick="document.getElementById('uploadPromotores').click()" id="uploadAreaPromotores">
+              <i class="fas fa-file-csv"></i>
+              <p>Promotores.csv</p>
+              <small>Clic o arrastra el archivo aquí</small>
+            </div>
+            <input type="file" id="uploadPromotores" accept=".csv" style="display:none" onchange="handleCSVUpload('promotores',this)">
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--cyan)"><i class="fas fa-file-alt"></i> Registro Formulario</div>
+            <div class="upload-area" onclick="document.getElementById('uploadFormulario').click()" id="uploadAreaFormulario">
+              <i class="fas fa-file-csv"></i>
+              <p>Registro Formulario.csv</p>
+              <small>Clic o arrastra el archivo aquí</small>
+            </div>
+            <input type="file" id="uploadFormulario" accept=".csv" style="display:none" onchange="handleCSVUpload('formulario',this)">
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="applyUploadedData()" id="applyBtn" disabled><i class="fas fa-check"></i> Aplicar Datos Cargados</button>
+        <div id="uploadStatus" style="margin-top:12px;font-size:13px;color:var(--text2)"></div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+// =====================================================
+// GLOBAL STATE
+// =====================================================
+let DATA = { registros: [], promotores: [], formulario: [] };
+let CHARTS = {};
+let uploadedCSVs = { registros: null, promotores: null, formulario: null };
+let tablePagination = {};
+const PAGE_SIZE = 50;
+
+const COLORS = [
+  '#7c3aed','#ec4899','#06b6d4','#10b981','#f59e0b',
+  '#ef4444','#3b82f6','#84cc16','#f97316','#6366f1',
+  '#8b5cf6','#f472b6','#22d3ee','#34d399','#fbbf24',
+  '#fb7185','#60a5fa','#a3e635','#fb923c','#818cf8'
+];
+
+function getColor(i){ return COLORS[i % COLORS.length]; }
+
+// =====================================================
+// NAVIGATION
+// =====================================================
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// =====================================================
+// DATA LOADING
+// =====================================================
+async function refreshData() {
+  const icon = document.getElementById('refreshIcon');
+  icon.classList.add('fa-spin');
+  setStatus('loading', 'Cargando...');
+  try {
+    const res = await fetch('/api/data');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.json();
+    parseN8NData(raw);
+    renderAll();
+    setStatus('ok', 'Conectado');
+    document.getElementById('lastSync').textContent = 'Última sync: ' + new Date().toLocaleTimeString('es');
+    document.getElementById('syncDot').classList.remove('error');
+    document.getElementById('syncText').textContent = 'Sincronizado';
+  } catch(e) {
+    setStatus('err', 'Error: ' + e.message);
+    document.getElementById('syncDot').classList.add('error');
+    document.getElementById('syncText').textContent = 'Error conexión';
+    // Try demo data if available from uploads
+    if (uploadedCSVs.registros || uploadedCSVs.promotores || uploadedCSVs.formulario) {
+      applyUploadedData();
+    }
+  } finally {
+    icon.classList.remove('fa-spin');
+    hideLoading();
+  }
+}
+
+function parseN8NData(raw) {
+  // n8n returns array of items — each item may have a json property (n8n format) or be direct
+  const items = Array.isArray(raw) ? raw : (raw.data || []);
+  const flat = items.map(i => i.json || i);
+  DATA.registros = flat.filter(i => 'Locator' in i && i.Locator);
+  DATA.promotores = flat.filter(i => 'Promotor' in i && 'Codigo' in i);
+  DATA.formulario = flat.filter(i => 'Dance_role' in i || 'Nombre' in i);
+}
+
+function setStatus(type, text) {
+  const b = document.getElementById('statusBadge');
+  b.className = 'status-badge ' + (type==='ok'?'ok':type==='err'?'err':'loading');
+  document.getElementById('statusText').textContent = text;
+}
+
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.add('hidden');
+}
+
+// =====================================================
+// CSV UPLOAD
+// =====================================================
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).map(line => {
+    const vals = parseCSVLine(line);
+    const obj = {};
+    headers.forEach((h,i) => { obj[h] = (vals[i]||'').trim().replace(/^"|"$/g,''); });
+    return obj;
+  });
+}
+
+function parseCSVLine(line) {
+  const result = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c==='"') { inQ=!inQ; }
+    else if (c===',' && !inQ) { result.push(cur); cur=''; }
+    else { cur+=c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+function handleCSVUpload(type, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    uploadedCSVs[type] = parseCSV(e.target.result);
+    const area = document.getElementById('uploadArea' + type.charAt(0).toUpperCase() + type.slice(1));
+    if (area) {
+      area.style.background = 'rgba(16,185,129,.1)';
+      area.style.borderColor = '#10b981';
+      area.querySelector('p').textContent = '✓ ' + file.name;
+    }
+    checkUploadReady();
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function checkUploadReady() {
+  const ready = uploadedCSVs.registros || uploadedCSVs.promotores || uploadedCSVs.formulario;
+  document.getElementById('applyBtn').disabled = !ready;
+}
+
+function applyUploadedData() {
+  if (uploadedCSVs.registros) DATA.registros = uploadedCSVs.registros;
+  if (uploadedCSVs.promotores) DATA.promotores = uploadedCSVs.promotores;
+  if (uploadedCSVs.formulario) DATA.formulario = uploadedCSVs.formulario;
+  renderAll();
+  setStatus('ok', 'CSV Cargado');
+  hideLoading();
+  document.getElementById('uploadStatus').innerHTML = '<span style="color:var(--green)"><i class="fas fa-check-circle"></i> Datos aplicados correctamente</span>';
+}
+
+// =====================================================
+// HELPERS
+// =====================================================
+function parseEuro(str) {
+  if (!str && str !== 0) return 0;
+  if (typeof str === 'number') return str;
+  return parseFloat(String(str).replace(/[€\s.]/g,'').replace(',','.')) || 0;
+}
+
+function formatEuro(n) {
+  return new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
+}
+
+function formatNum(n) {
+  return new Intl.NumberFormat('es-ES').format(n);
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const dt = new Date(d);
+  return isNaN(dt) ? d : dt.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'});
+}
+
+function groupBy(arr, key) {
+  return arr.reduce((acc, item) => {
+    const k = item[key] || 'Desconocido';
+    acc[k] = (acc[k] || []);
+    acc[k].push(item);
+    return acc;
+  }, {});
+}
+
+function countBy(arr, key) {
+  return arr.reduce((acc,item) => {
+    const k = item[key] || 'Desconocido';
+    acc[k] = (acc[k]||0)+1;
+    return acc;
+  }, {});
+}
+
+function sumBy(arr, key) {
+  return arr.reduce((s,i) => s + parseEuro(i[key]), 0);
+}
+
+function sortObjByVal(obj, desc=true) {
+  return Object.entries(obj).sort((a,b) => desc ? b[1]-a[1] : a[1]-b[1]);
+}
+
+function topN(obj, n) {
+  return sortObjByVal(obj).slice(0,n);
+}
+
+function destroyChart(id) {
+  if (CHARTS[id]) { CHARTS[id].destroy(); delete CHARTS[id]; }
+}
+
+function makeChart(id, config) {
+  destroyChart(id);
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  CHARTS[id] = new Chart(ctx, config);
+}
+
+const defaultLineOpts = {
+  responsive:true, maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
+  scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8',font:{size:11}}},
+          y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8',font:{size:11}}}}
+};
+
+const defaultBarOpts = {
+  responsive:true, maintainAspectRatio:false,
+  plugins:{legend:{display:false}},
+  scales:{x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:11}}},
+          y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8',font:{size:11}}}}
+};
+
+const defaultDoughnutOpts = {
+  responsive:true, maintainAspectRatio:false,
+  plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:11},boxWidth:12,padding:8}},
+           tooltip:{callbacks:{label:ctx=>{const tot=ctx.dataset.data.reduce((a,b)=>a+b,0);return ` ${ctx.label}: ${ctx.raw} (${((ctx.raw/tot)*100).toFixed(1)}%)`;}}}}
+};
+
+// =====================================================
+// RENDER ALL
+// =====================================================
+function renderAll() {
+  renderOverview();
+  renderSales();
+  renderPromoters();
+  renderLeads();
+  renderDemographics();
+  renderGeography();
+  renderTickets();
+  renderRawData();
+}
+
+// =====================================================
+// OVERVIEW
+// =====================================================
+function renderOverview() {
+  const R = DATA.registros;
+  const P = DATA.promotores;
+  const F = DATA.formulario;
+
+  const totalVentas = R.length;
+  const totalIngresos = sumBy(R, 'Price');
+  const activos = R.filter(r => r.Status === 'Active').length;
+  const promotoresConVentas = P.filter(p => parseEuro(p.Importe_total) > 0).length;
+  const totalLeads = F.length;
+  const comprados = F.filter(f => f.Purchase === 'YES' || f.Purchase === 'SI').length;
+  const conversion = totalLeads > 0 ? ((comprados/totalLeads)*100).toFixed(1) : 0;
+  const avgPrice = totalVentas > 0 ? (totalIngresos/totalVentas) : 0;
+  const refunds = R.filter(r => r.Sale_type && r.Sale_type.toLowerCase().includes('refund')).length;
+
+  document.getElementById('kpi-totalVentas').textContent = formatNum(totalVentas);
+  document.getElementById('kpi-totalIngresos').textContent = formatEuro(totalIngresos);
+  document.getElementById('kpi-ticketsActivos').textContent = formatNum(activos);
+  document.getElementById('kpi-promotoresActivos').textContent = formatNum(promotoresConVentas);
+  document.getElementById('kpi-totalLeads').textContent = formatNum(totalLeads);
+  document.getElementById('kpi-conversion').textContent = conversion + '%';
+  document.getElementById('kpi-avgPrice').textContent = formatEuro(avgPrice);
+  document.getElementById('kpi-totalRefunds').textContent = formatNum(refunds);
+
+  // Sales by day
+  const byDay = countBy(R, r => r.Date ? r.Date.substring(0,10) : 'N/A');
+  const days = Object.keys(byDay).filter(d=>d!=='N/A').sort();
+  makeChart('chartSalesByDay', {
+    type:'bar',
+    data:{labels:days.map(d=>new Date(d).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})),
+          datasets:[{data:days.map(d=>byDay[d]),backgroundColor:COLORS[0]+'99',borderColor:COLORS[0],borderWidth:2,borderRadius:4}]},
+    options:{...defaultBarOpts, plugins:{...defaultBarOpts.plugins, legend:{display:false}}}
+  });
+
+  // Sale type donut
+  const saleTypes = countBy(R, 'Sale_type');
+  makeChart('chartSaleType', {
+    type:'doughnut',
+    data:{labels:Object.keys(saleTypes),datasets:[{data:Object.values(saleTypes),backgroundColor:COLORS.slice(0,Object.keys(saleTypes).length),borderWidth:0,hoverOffset:8}]},
+    options:{...defaultDoughnutOpts}
+  });
+
+  // Top promoters bar
+  const byPromoter = countBy(R.filter(r=>r.Promoter), 'Promoter');
+  const top = topN(byPromoter, 10);
+  makeChart('chartTopPromoters', {
+    type:'bar',
+    data:{labels:top.map(x=>x[0]),datasets:[{data:top.map(x=>x[1]),backgroundColor:top.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y', plugins:{legend:{display:false}}}
+  });
+
+  // Ticket types donut
+  const cleanTicket = t => {
+    if (!t) return 'Desconocido';
+    if (t.includes('Full Pass')) return 'Full Pass';
+    if (t.includes('Follower Pro')) return 'Follower Pro';
+    if (t.includes('Follower Amateur')) return 'Follower Amateur';
+    if (t.includes('Leader Pro')) return 'Leader Pro';
+    if (t.includes('Leader Amateur')) return 'Leader Amateur';
+    if (t.includes('Room') || t.includes('room')) return 'Habitación';
+    return t.substring(0,30);
+  };
+  const ticketCounts = countBy(R.map(r=>({...r,_ticket:cleanTicket(r.Ticket)})), '_ticket');
+  makeChart('chartTicketTypes', {
+    type:'doughnut',
+    data:{labels:Object.keys(ticketCounts),datasets:[{data:Object.values(ticketCounts),backgroundColor:COLORS.slice(0,Object.keys(ticketCounts).length),borderWidth:0,hoverOffset:8}]},
+    options:{...defaultDoughnutOpts}
+  });
+}
+
+// =====================================================
+// SALES & REVENUE
+// =====================================================
+function renderSales() {
+  const R = DATA.registros;
+  const online = R.filter(r => r.Sale_type === 'promoterOnline');
+  const offline = R.filter(r => r.Sale_type === 'promoterOffline' || r.Sale_type === 'offline');
+  const goandance = R.filter(r => r.Sale_type === 'goandance');
+  const totalIngresos = sumBy(R,'Price');
+  const avgTicket = R.length > 0 ? totalIngresos/R.length : 0;
+
+  document.getElementById('kpi-s-total').textContent = formatEuro(totalIngresos);
+  document.getElementById('kpi-s-ventas').textContent = formatNum(R.length);
+  document.getElementById('kpi-s-online').textContent = formatNum(online.length);
+  document.getElementById('kpi-s-offline').textContent = formatNum(offline.length);
+  document.getElementById('kpi-s-goandance').textContent = formatNum(goandance.length);
+  document.getElementById('kpi-s-avgTicket').textContent = formatEuro(avgTicket);
+
+  // Revenue accumulated
+  const byDay = {};
+  R.forEach(r => {
+    const d = r.Date ? r.Date.substring(0,10) : null;
+    if (d) byDay[d] = (byDay[d]||0) + parseEuro(r.Price);
+  });
+  const days = Object.keys(byDay).sort();
+  let cum = 0;
+  const cumData = days.map(d => { cum += byDay[d]; return cum; });
+  makeChart('chartRevenueAccum', {
+    type:'line',
+    data:{labels:days.map(d=>new Date(d).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})),
+          datasets:[{data:cumData,borderColor:COLORS[0],backgroundColor:COLORS[0]+'22',fill:true,tension:.4,pointRadius:3}]},
+    options:{...defaultLineOpts}
+  });
+
+  // Revenue by channel
+  makeChart('chartRevenueByChannel', {
+    type:'doughnut',
+    data:{labels:['Promoter Online','Promoter Offline','GoAndDance'],
+          datasets:[{data:[sumBy(online,'Price'),sumBy(offline,'Price'),sumBy(goandance,'Price')],
+                     backgroundColor:[COLORS[0],COLORS[1],COLORS[2]],borderWidth:0,hoverOffset:8}]},
+    options:{...defaultDoughnutOpts}
+  });
+
+  // Revenue by ticket type
+  const cleanTicket = t => {
+    if (!t) return 'Otro';
+    if (t.includes('Full Pass')) return 'Full Pass';
+    if (t.includes('Follower Pro')) return 'Follower Pro';
+    if (t.includes('Follower Amateur')) return 'Follower Amateur';
+    if (t.includes('Leader Pro')) return 'Leader Pro';
+    if (t.includes('Leader Amateur')) return 'Leader Amateur';
+    if (t.includes('Room')||t.includes('room')) return 'Habitación';
+    return t.substring(0,25);
+  };
+  const revByTicket = {};
+  R.forEach(r => {
+    const t = cleanTicket(r.Ticket);
+    revByTicket[t] = (revByTicket[t]||0) + parseEuro(r.Price);
+  });
+  const rtSorted = sortObjByVal(revByTicket);
+  makeChart('chartRevenueByTicket', {
+    type:'bar',
+    data:{labels:rtSorted.map(x=>x[0]),
+          datasets:[{data:rtSorted.map(x=>x[1]),backgroundColor:rtSorted.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y'}
+  });
+
+  // Avg price by day
+  const avgByDay = {};
+  const cntByDay = {};
+  R.forEach(r => {
+    const d = r.Date ? r.Date.substring(0,10) : null;
+    if (d && parseEuro(r.Price) > 0) {
+      avgByDay[d] = (avgByDay[d]||0) + parseEuro(r.Price);
+      cntByDay[d] = (cntByDay[d]||0) + 1;
+    }
+  });
+  const daysAvg = Object.keys(avgByDay).sort();
+  makeChart('chartAvgPriceByDay', {
+    type:'line',
+    data:{labels:daysAvg.map(d=>new Date(d).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})),
+          datasets:[{data:daysAvg.map(d=>Math.round(avgByDay[d]/cntByDay[d])),borderColor:COLORS[4],backgroundColor:COLORS[4]+'22',fill:true,tension:.4,pointRadius:3}]},
+    options:{...defaultLineOpts}
+  });
+
+  // Revenue by promoter top 20
+  const revByProm = {};
+  R.filter(r=>r.Promoter).forEach(r => {
+    revByProm[r.Promoter] = (revByProm[r.Promoter]||0) + parseEuro(r.Price);
+  });
+  const topProm = sortObjByVal(revByProm).slice(0,20);
+  makeChart('chartRevenueByPromoter', {
+    type:'bar',
+    data:{labels:topProm.map(x=>x[0]),
+          datasets:[{data:topProm.map(x=>x[1]),backgroundColor:topProm.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y'}
+  });
+}
+
+// =====================================================
+// PROMOTORES
+// =====================================================
+function renderPromoters() {
+  const P = DATA.promotores;
+  const conVentas = P.filter(p => parseEuro(p.Importe_total) > 0);
+  const totalComisiones = P.reduce((s,p) => s + parseEuro(p.Comision_real), 0);
+  const totalEntradas = P.reduce((s,p) => s + (parseInt(p.Total_entradas)||0), 0);
+  const topP = [...P].sort((a,b) => parseEuro(b.Importe_total)-parseEuro(a.Importe_total))[0];
+  const avgComision = conVentas.length > 0 ? totalComisiones/conVentas.length : 0;
+
+  document.getElementById('kpi-p-total').textContent = formatNum(P.length);
+  document.getElementById('kpi-p-activos').textContent = formatNum(conVentas.length);
+  document.getElementById('kpi-p-comisiones').textContent = formatEuro(totalComisiones);
+  document.getElementById('kpi-p-topPromotor').textContent = topP ? (topP.Codigo || topP.Promotor || '—').substring(0,12) : '—';
+  document.getElementById('kpi-p-totalEntradas').textContent = formatNum(totalEntradas);
+  document.getElementById('kpi-p-avgComision').textContent = formatEuro(avgComision);
+
+  // Ranking chart top 15
+  const top15 = [...P].sort((a,b)=>(parseInt(b.Total_entradas)||0)-(parseInt(a.Total_entradas)||0)).slice(0,15);
+  makeChart('chartPromoterRanking', {
+    type:'bar',
+    data:{labels:top15.map(p=>p.Codigo||p.Promotor||'?'),
+          datasets:[{data:top15.map(p=>parseInt(p.Total_entradas)||0),
+                     backgroundColor:top15.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y'}
+  });
+
+  // Podium
+  const podium = document.getElementById('podiumList');
+  podium.innerHTML = top15.map((p,i) => `
+    <div class="rank-row">
+      <div class="rank-num ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other'}">${i+1}</div>
+      <div><div class="rank-name">${(p.Promotor||'?').substring(0,28)}</div><div class="rank-code">${p.Codigo||''}</div></div>
+      <div><div class="rank-value">${parseInt(p.Total_entradas)||0} <small style="color:var(--text2);font-weight:400">ent.</small></div><div style="font-size:11px;color:var(--green)">${formatEuro(parseEuro(p.Importe_total))}</div></div>
+    </div>`).join('');
+
+  // Commissions chart
+  const top15c = [...P].sort((a,b)=>parseEuro(b.Comision_real)-parseEuro(a.Comision_real)).slice(0,15);
+  makeChart('chartPromoterComissions', {
+    type:'bar',
+    data:{labels:top15c.map(p=>p.Codigo||p.Promotor||'?'),
+          datasets:[{data:top15c.map(p=>parseEuro(p.Comision_real)),backgroundColor:COLORS[4]+'cc',borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y'}
+  });
+
+  // Online vs offline by promoter top 10
+  const top10 = [...P].sort((a,b)=>(parseInt(b.Total_entradas)||0)-(parseInt(a.Total_entradas)||0)).slice(0,10);
+  makeChart('chartPromoterChannels', {
+    type:'bar',
+    data:{labels:top10.map(p=>p.Codigo||p.Promotor||'?'),
+          datasets:[
+            {label:'Online',data:top10.map(p=>parseInt(p.Entradas_online)||0),backgroundColor:COLORS[0]+'cc',borderRadius:4},
+            {label:'Offline',data:top10.map(p=>parseInt(p.Entradas_offline)||0),backgroundColor:COLORS[1]+'cc',borderRadius:4}
+          ]},
+    options:{...defaultBarOpts, plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{size:11}}}}}
+  });
+
+  renderPromotersTable();
+}
+
+function renderPromotersTable() {
+  const filter = document.getElementById('filterPromoterStatus').value;
+  let P = DATA.promotores;
+  if (filter==='conVentas') P = P.filter(p=>parseEuro(p.Importe_total)>0);
+  else if (filter==='sinVentas') P = P.filter(p=>parseEuro(p.Importe_total)===0);
+  P = [...P].sort((a,b)=>parseEuro(b.Importe_total)-parseEuro(a.Importe_total));
+  renderTablePage('promotoresTable', P, 'promotoresTableBody', 'promotoresTableInfo', 'promotoresPagination', row => `
+    <tr>
+      <td>${row._rank||''}</td>
+      <td title="${row.Promotor||''}">${(row.Promotor||'—').substring(0,30)}</td>
+      <td><span class="badge badge-purple">${row.Codigo||'—'}</span></td>
+      <td style="text-align:center"><strong>${parseInt(row.Total_entradas)||0}</strong></td>
+      <td style="color:var(--green);font-weight:700">${formatEuro(parseEuro(row.Importe_total))}</td>
+      <td style="color:var(--amber)">${formatEuro(parseEuro(row.Comision_real))}</td>
+      <td>${formatEuro(parseEuro(row.A_pagar_al_promotor))}</td>
+      <td>${parseInt(row.Entradas_online)||0}</td>
+      <td>${parseInt(row.Entradas_offline)||0}</td>
+      <td><span class="badge ${parseEuro(row.Importe_total)>0?'badge-green':'badge-gray'}">${parseEuro(row.Importe_total)>0?'Activo':'Sin ventas'}</span></td>
+    </tr>`, p => ({...p, _rank: DATA.promotores.indexOf(p)+1}));
+}
+
+// =====================================================
+// LEADS
+// =====================================================
+function renderLeads() {
+  const F = DATA.formulario;
+  const comprados = F.filter(f=>f.Purchase==='YES'||f.Purchase==='SI'||f.Purchase==='yes').length;
+  const noComprados = F.length - comprados;
+  const conCodigo = F.filter(f=>f.Promoter_code&&f.Promoter_code.trim()).length;
+  const fuentes = countBy(F,'How_did_you_find_us');
+  const topFuente = sortObjByVal(fuentes)[0];
+  const conv = F.length>0?((comprados/F.length)*100).toFixed(1):0;
+
+  document.getElementById('kpi-l-total').textContent = formatNum(F.length);
+  document.getElementById('kpi-l-comprados').textContent = formatNum(comprados);
+  document.getElementById('kpi-l-noComprado').textContent = formatNum(noComprados);
+  document.getElementById('kpi-l-conversion').textContent = conv+'%';
+  document.getElementById('kpi-l-conCodigo').textContent = formatNum(conCodigo);
+  document.getElementById('kpi-l-topFuente').textContent = topFuente?topFuente[0].substring(0,12):'—';
+
+  // Funnel
+  const funnelEl = document.getElementById('funnelChart');
+  const steps = [
+    {label:'Registros formulario', count:F.length, color:'#7c3aed'},
+    {label:'Con código promotor', count:conCodigo, color:'#ec4899'},
+    {label:'Han comprado', count:comprados, color:'#10b981'},
+  ];
+  const maxVal = steps[0].count || 1;
+  funnelEl.innerHTML = '<div class="funnel">' + steps.map(s=>`
+    <div class="funnel-step">
+      <div class="funnel-label">${s.label}</div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar" style="width:${(s.count/maxVal*100).toFixed(1)}%;background:${s.color}">${s.count>0?s.count:''}</div>
+      </div>
+      <div class="funnel-count">${formatNum(s.count)}</div>
+    </div>`).join('') + '</div>';
+
+  // How found
+  makeChart('chartHowFound', {
+    type:'doughnut',
+    data:{labels:Object.keys(fuentes),datasets:[{data:Object.values(fuentes),backgroundColor:COLORS.slice(0,Object.keys(fuentes).length),borderWidth:0,hoverOffset:8}]},
+    options:{...defaultDoughnutOpts}
+  });
+
+  // Dance role
+  const roles = countBy(F,'Dance_role');
+  makeChart('chartDanceRole', {
+    type:'doughnut',
+    data:{labels:Object.keys(roles),datasets:[{data:Object.values(roles),backgroundColor:[COLORS[0],COLORS[1]],borderWidth:0}]},
+    options:{...defaultDoughnutOpts, plugins:{...defaultDoughnutOpts.plugins, legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}
+  });
+
+  // Dance level
+  const levels = countBy(F,'Dance_level');
+  const levelOrder = ['Beginner','Intermediate','Advanced','Professional'];
+  const sortedLevels = [...levelOrder.filter(l=>levels[l]), ...Object.keys(levels).filter(l=>!levelOrder.includes(l))];
+  makeChart('chartDanceLevel', {
+    type:'bar',
+    data:{labels:sortedLevels,datasets:[{data:sortedLevels.map(l=>levels[l]||0),backgroundColor:sortedLevels.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts, plugins:{legend:{display:false}}}
+  });
+
+  // Styles
+  const styleCount = {};
+  F.forEach(f=>{
+    if (!f.Preferred_style) return;
+    f.Preferred_style.split(',').forEach(s=>{
+      const t=s.trim().replace(/^"|"$/g,'');
+      if(t) styleCount[t]=(styleCount[t]||0)+1;
+    });
+  });
+  const topStyles = sortObjByVal(styleCount).slice(0,8);
+  makeChart('chartStyles', {
+    type:'bar',
+    data:{labels:topStyles.map(x=>x[0]),datasets:[{data:topStyles.map(x=>x[1]),backgroundColor:topStyles.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y', plugins:{legend:{display:false}}}
+  });
+
+  // Leads by day
+  const leadsByDay = countBy(F.filter(f=>f.Fecha_de_submit), f=>f.Fecha_de_submit.substring(0,10));
+  const ld = Object.keys(leadsByDay).sort();
+  makeChart('chartLeadsByDay', {
+    type:'bar',
+    data:{labels:ld.map(d=>new Date(d).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})),
+          datasets:[{data:ld.map(d=>leadsByDay[d]),backgroundColor:COLORS[2]+'99',borderColor:COLORS[2],borderWidth:2,borderRadius:4}]},
+    options:{...defaultBarOpts}
+  });
+
+  // Lead promoter codes
+  const codigos = countBy(F.filter(f=>f.Promoter_code&&f.Promoter_code.trim()),'Promoter_code');
+  const topCod = sortObjByVal(codigos).slice(0,15);
+  const lpc = document.getElementById('leadPromoterCodes');
+  lpc.innerHTML = topCod.map(([name,val])=>`
+    <div class="prog-item">
+      <div class="prog-header"><span class="prog-name">${name}</span><span class="prog-val">${val}</span></div>
+      <div class="prog-bar-wrap"><div class="prog-bar" style="width:${(val/topCod[0][1]*100).toFixed(0)}%"></div></div>
+    </div>`).join('');
+
+  // Leads by country
+  const leadsCountry = countBy(F,'Pais');
+  const topLC = sortObjByVal(leadsCountry).slice(0,15);
+  makeChart('chartLeadsCountry', {
+    type:'bar',
+    data:{labels:topLC.map(x=>x[0]),datasets:[{data:topLC.map(x=>x[1]),backgroundColor:topLC.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y'}
+  });
+}
+
+// =====================================================
+// DEMOGRAPHICS
+// =====================================================
+function renderDemographics() {
+  const R = DATA.registros;
+  const F = DATA.formulario;
+
+  // Gender
+  const genders = countBy(R,'Sex');
+  makeChart('chartGender', {
+    type:'doughnut',
+    data:{labels:Object.keys(genders),datasets:[{data:Object.values(genders),backgroundColor:[COLORS[2],COLORS[1],COLORS[0]],borderWidth:0}]},
+    options:{...defaultDoughnutOpts, plugins:{...defaultDoughnutOpts.plugins, legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}
+  });
+
+  // Role
+  const roles = countBy(R,'Role');
+  makeChart('chartRole', {
+    type:'doughnut',
+    data:{labels:Object.keys(roles),datasets:[{data:Object.values(roles),backgroundColor:[COLORS[0],COLORS[1]],borderWidth:0}]},
+    options:{...defaultDoughnutOpts, plugins:{...defaultDoughnutOpts.plugins, legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}
+  });
+
+  // Level (from leads)
+  const levels = countBy(F,'Dance_level');
+  makeChart('chartLevelDemog', {
+    type:'doughnut',
+    data:{labels:Object.keys(levels),datasets:[{data:Object.values(levels),backgroundColor:COLORS.slice(0,Object.keys(levels).length),borderWidth:0}]},
+    options:{...defaultDoughnutOpts, plugins:{...defaultDoughnutOpts.plugins, legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}
+  });
+
+  // Gender by role stacked
+  const male_leader = R.filter(r=>r.Sex==='Male'&&r.Role==='Leader').length;
+  const male_follower = R.filter(r=>r.Sex==='Male'&&r.Role==='Follower').length;
+  const female_leader = R.filter(r=>r.Sex==='Female'&&r.Role==='Leader').length;
+  const female_follower = R.filter(r=>r.Sex==='Female'&&r.Role==='Follower').length;
+  makeChart('chartGenderByRole', {
+    type:'bar',
+    data:{labels:['Leader','Follower'],
+          datasets:[
+            {label:'Male',data:[male_leader,male_follower],backgroundColor:COLORS[2]+'cc',borderRadius:6},
+            {label:'Female',data:[female_leader,female_follower],backgroundColor:COLORS[1]+'cc',borderRadius:6}
+          ]},
+    options:{...defaultBarOpts, plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{size:11}}}}}
+  });
+
+  // Balance visual
+  const leaders = roles['Leader']||0;
+  const followers = roles['Follower']||0;
+  const total = leaders+followers;
+  const bal = document.getElementById('leaderFollowerBalance');
+  const ratio = total>0 ? (leaders/total*100).toFixed(1) : 50;
+  bal.innerHTML = `
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:14px;color:var(--text2);margin-bottom:8px">Ratio Leaders / Followers</div>
+      <div style="font-size:36px;font-weight:800;background:linear-gradient(135deg,#7c3aed,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent">${ratio}% / ${(100-ratio).toFixed(1)}%</div>
+    </div>
+    <div style="display:flex;border-radius:8px;overflow:hidden;height:32px;margin-bottom:12px">
+      <div style="width:${ratio}%;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">${leaders}</div>
+      <div style="flex:1;background:#ec4899;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">${followers}</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2)">
+      <span style="color:#a78bfa">● Leaders: ${leaders}</span>
+      <span style="color:#f9a8d4">● Followers: ${followers}</span>
+    </div>
+    <div class="stat-row" style="margin-top:16px"><span class="stat-label">Total con rol</span><span class="stat-val">${total}</span></div>
+    <div class="stat-row"><span class="stat-label">Sin rol definido</span><span class="stat-val">${R.length-total}</span></div>
+    <div class="stat-row"><span class="stat-label">Hombres totales</span><span class="stat-val">${(genders['Male']||0)}</span></div>
+    <div class="stat-row"><span class="stat-label">Mujeres totales</span><span class="stat-val">${(genders['Female']||0)}</span></div>
+  `;
+  // capture genders locally for balance
+  const gendersLocal = countBy(R,'Sex');
+  bal.innerHTML = bal.innerHTML
+    .replace('${(genders[\'Male\']||0)}', gendersLocal['Male']||0)
+    .replace('${(genders[\'Female\']||0)}', gendersLocal['Female']||0);
+}
+
+// =====================================================
+// GEOGRAPHY
+// =====================================================
+function renderGeography() {
+  const R = DATA.registros;
+  const countries = countBy(R.filter(r=>r.Country),'Country');
+  const cities = countBy(R.filter(r=>r.City),'City');
+  const topCountry = sortObjByVal(countries)[0];
+  const topCity = sortObjByVal(cities)[0];
+
+  document.getElementById('kpi-g-paises').textContent = Object.keys(countries).length;
+  document.getElementById('kpi-g-ciudades').textContent = Object.keys(cities).length;
+  document.getElementById('kpi-g-topPais').textContent = topCountry?topCountry[0].substring(0,12):'—';
+  document.getElementById('kpi-g-topCiudad').textContent = topCity?topCity[0].substring(0,12):'—';
+
+  const topC = sortObjByVal(countries).slice(0,20);
+  makeChart('chartCountries', {
+    type:'bar',
+    data:{labels:topC.map(x=>x[0]),datasets:[{data:topC.map(x=>x[1]),backgroundColor:topC.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y'}
+  });
+
+  const topCit = sortObjByVal(cities).slice(0,20);
+  makeChart('chartCities', {
+    type:'bar',
+    data:{labels:topCit.map(x=>x[0]),datasets:[{data:topCit.map(x=>x[1]),backgroundColor:COLORS[2]+'cc',borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y'}
+  });
+
+  // Revenue by country
+  const revByCountry = {};
+  R.filter(r=>r.Country).forEach(r=>{
+    revByCountry[r.Country]=(revByCountry[r.Country]||0)+parseEuro(r.Price);
+  });
+  const topRC = sortObjByVal(revByCountry).slice(0,15);
+  makeChart('chartRevenueByCountry', {
+    type:'bar',
+    data:{labels:topRC.map(x=>x[0]),datasets:[{data:topRC.map(x=>x[1]),backgroundColor:topRC.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y'}
+  });
+}
+
+// =====================================================
+// TICKETS
+// =====================================================
+function renderTickets() {
+  const R = DATA.registros;
+  const activos = R.filter(r=>r.Status==='Active').length;
+  const escaneados = R.filter(r=>r.Scanned_date&&r.Scanned_date.trim()).length;
+  const cleanTicket = t => {
+    if (!t) return 'Desconocido';
+    if (t.includes('Full Pass')) return 'Full Pass';
+    if (t.includes('Follower Pro')) return 'Follower Pro';
+    if (t.includes('Follower Amateur')) return 'Follower Amateur';
+    if (t.includes('Leader Pro')) return 'Leader Pro';
+    if (t.includes('Leader Amateur')) return 'Leader Amateur';
+    if (t.includes('Room')||t.includes('room')||t.includes('Deluxe')||t.includes('Standard')) return 'Habitación';
+    return t.replace(/[✅🎫🏆]/g,'').trim().substring(0,30);
+  };
+  const ticketMap = R.map(r=>({...r,_ct:cleanTicket(r.Ticket)}));
+  const ticketCounts = countBy(ticketMap,'_ct');
+  const ticketTypes = Object.keys(ticketCounts).length;
+
+  document.getElementById('kpi-t-total').textContent = formatNum(R.length);
+  document.getElementById('kpi-t-activos').textContent = formatNum(activos);
+  document.getElementById('kpi-t-escaneados').textContent = formatNum(escaneados);
+  document.getElementById('kpi-t-tipos').textContent = ticketTypes;
+
+  const tSorted = sortObjByVal(ticketCounts);
+  makeChart('chartTicketDistrib', {
+    type:'bar',
+    data:{labels:tSorted.map(x=>x[0]),datasets:[{data:tSorted.map(x=>x[1]),backgroundColor:tSorted.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts, indexAxis:'y'}
+  });
+
+  const statusCounts = countBy(R,'Status');
+  makeChart('chartTicketStatus', {
+    type:'doughnut',
+    data:{labels:Object.keys(statusCounts),datasets:[{data:Object.values(statusCounts),backgroundColor:[COLORS[3],COLORS[4],COLORS[5]],borderWidth:0,hoverOffset:8}]},
+    options:{...defaultDoughnutOpts}
+  });
+
+  // Avg price by ticket type
+  const priceByTicket = {}; const cntTick = {};
+  R.forEach(r=>{
+    const t = cleanTicket(r.Ticket);
+    const p = parseEuro(r.Price);
+    if (p>0) { priceByTicket[t]=(priceByTicket[t]||0)+p; cntTick[t]=(cntTick[t]||0)+1; }
+  });
+  const avgByTicket = Object.keys(priceByTicket).map(t=>([t, priceByTicket[t]/cntTick[t]])).sort((a,b)=>b[1]-a[1]);
+  makeChart('chartTicketPrice', {
+    type:'bar',
+    data:{labels:avgByTicket.map(x=>x[0]),datasets:[{data:avgByTicket.map(x=>Math.round(x[1])),backgroundColor:avgByTicket.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...defaultBarOpts}
+  });
+}
+
+// =====================================================
+// RAW DATA TABLES
+// =====================================================
+function renderRawData() {
+  // Registros table
+  const R = DATA.registros;
+  renderTablePage('registrosTable', R, 'registrosTableBody', 'registrosTableInfo', 'registrosPagination', row=>`
+    <tr>
+      <td><span class="badge badge-gray">${row.Locator||'—'}</span></td>
+      <td>${formatDate(row.Date)}</td>
+      <td title="${row.Full_name||''}">${(row.Full_name||'—').substring(0,22)}</td>
+      <td title="${row.Email||''}">${(row.Email||'—').substring(0,22)}</td>
+      <td>${row.Promoter?`<span class="badge badge-purple">${row.Promoter}</span>`:'—'}</td>
+      <td><span class="badge ${row.Sale_type==='goandance'?'badge-cyan':row.Sale_type&&row.Sale_type.includes('Online')||row.Sale_type==='promoterOnline'?'badge-purple':'badge-amber'}">${row.Sale_type||'—'}</span></td>
+      <td title="${row.Ticket||''}">${(row.Ticket||'—').replace(/[✅🎫🏆]/g,'').trim().substring(0,25)}</td>
+      <td style="color:var(--green);font-weight:700">${row.Price?formatEuro(parseEuro(row.Price)):'—'}</td>
+      <td><span class="badge ${row.Status==='Active'?'badge-green':'badge-red'}">${row.Status||'—'}</span></td>
+      <td>${row.Country||'—'}</td>
+      <td>${row.Role||'—'}</td>
+    </tr>`);
+
+  // Formulario table
+  const F = DATA.formulario;
+  renderTablePage('formularioTable', F, 'formularioTableBody', 'formularioTableInfo', 'formularioPagination', row=>`
+    <tr>
+      <td>${(row.Full_name||row.Nombre||'—').substring(0,25)}</td>
+      <td title="${row.Email||''}">${(row.Email||'—').substring(0,25)}</td>
+      <td>${row.Pais||'—'}</td>
+      <td>${row.Dance_role||'—'}</td>
+      <td>${row.Dance_level||'—'}</td>
+      <td>${row.How_did_you_find_us||'—'}</td>
+      <td>${row.Promoter_code?`<span class="badge badge-purple">${row.Promoter_code}</span>`:'—'}</td>
+      <td><span class="badge ${row.Purchase==='YES'||row.Purchase==='SI'?'badge-green':'badge-red'}">${row.Purchase||'—'}</span></td>
+      <td>${formatDate(row.Fecha_de_submit)}</td>
+    </tr>`);
+}
+
+// =====================================================
+// PAGINATION TABLE ENGINE
+// =====================================================
+function renderTablePage(tableId, data, bodyId, infoId, pagId, rowRenderer, mapper=null, page=1) {
+  if (!tablePagination[tableId]) tablePagination[tableId] = {page:1, data:[], search:''};
+  tablePagination[tableId].data = data;
+  const state = tablePagination[tableId];
+  if (page) state.page = page;
+
+  let filtered = data;
+  if (state.search) {
+    const q = state.search.toLowerCase();
+    filtered = data.filter(row => Object.values(row).some(v=>String(v).toLowerCase().includes(q)));
+  }
+
+  const total = filtered.length;
+  const pages = Math.ceil(total/PAGE_SIZE);
+  const start = (state.page-1)*PAGE_SIZE;
+  const pageData = filtered.slice(start, start+PAGE_SIZE);
+
+  const body = document.getElementById(bodyId);
+  if (body) body.innerHTML = pageData.map((row,i) => rowRenderer(mapper?mapper(row,start+i):row, start+i)).join('');
+
+  const info = document.getElementById(infoId);
+  if (info) info.textContent = `Mostrando ${start+1}–${Math.min(start+PAGE_SIZE,total)} de ${total} registros`;
+
+  const pag = document.getElementById(pagId);
+  if (pag) {
+    const maxPages = Math.min(pages, 7);
+    let btns = '';
+    const p = state.page;
+    if (p>1) btns+=`<div class="page-btn" onclick="goPage('${tableId}','${bodyId}','${infoId}','${pagId}',${p-1},arguments[0])">‹</div>`;
+    for (let i=Math.max(1,p-2);i<=Math.min(pages,p+2);i++) {
+      btns+=`<div class="page-btn${i===p?' active':''}" onclick="goPage('${tableId}','${bodyId}','${infoId}','${pagId}',${i},arguments[0])">${i}</div>`;
+    }
+    if (p<pages) btns+=`<div class="page-btn" onclick="goPage('${tableId}','${bodyId}','${infoId}','${pagId}',${p+1},arguments[0])">›</div>`;
+    pag.innerHTML = btns;
+  }
+}
+
+function goPage(tableId, bodyId, infoId, pagId, page, e) {
+  if (!tablePagination[tableId]) return;
+  const state = tablePagination[tableId];
+  state.page = page;
+  // Re-render based on which table it is
+  if (tableId === 'registrosTable') renderTablePage(tableId, state.data, bodyId, infoId, pagId, row=>`<tr><td><span class="badge badge-gray">${row.Locator||'—'}</span></td><td>${formatDate(row.Date)}</td><td>${(row.Full_name||'—').substring(0,22)}</td><td>${(row.Email||'—').substring(0,22)}</td><td>${row.Promoter?`<span class="badge badge-purple">${row.Promoter}</span>`:'—'}</td><td><span class="badge badge-purple">${row.Sale_type||'—'}</span></td><td>${(row.Ticket||'—').replace(/[✅🎫🏆]/g,'').trim().substring(0,25)}</td><td style="color:var(--green);font-weight:700">${row.Price?formatEuro(parseEuro(row.Price)):'—'}</td><td><span class="badge ${row.Status==='Active'?'badge-green':'badge-red'}">${row.Status||'—'}</span></td><td>${row.Country||'—'}</td><td>${row.Role||'—'}</td></tr>`, null, page);
+  if (tableId === 'promotoresTable') renderPromotersTable();
+  if (tableId === 'formularioTable') renderTablePage(tableId, state.data, bodyId, infoId, pagId, row=>`<tr><td>${(row.Full_name||row.Nombre||'—').substring(0,25)}</td><td>${(row.Email||'—').substring(0,25)}</td><td>${row.Pais||'—'}</td><td>${row.Dance_role||'—'}</td><td>${row.Dance_level||'—'}</td><td>${row.How_did_you_find_us||'—'}</td><td>${row.Promoter_code?`<span class="badge badge-purple">${row.Promoter_code}</span>`:'—'}</td><td><span class="badge ${row.Purchase==='YES'||row.Purchase==='SI'?'badge-green':'badge-red'}">${row.Purchase||'—'}</span></td><td>${formatDate(row.Fecha_de_submit)}</td></tr>`, null, page);
+}
+
+function filterTable(tableId, query) {
+  if (!tablePagination[tableId]) return;
+  tablePagination[tableId].search = query;
+  tablePagination[tableId].page = 1;
+  // trigger re-render
+  if (tableId==='registrosTable') renderRawData();
+  if (tableId==='promotoresTable') renderPromotersTable();
+  if (tableId==='formularioTable') renderRawData();
+}
+
+function filterRegistrosByType(type) {
+  let data = DATA.registros;
+  if (type) data = data.filter(r=>r.Sale_type&&r.Sale_type.toLowerCase().includes(type));
+  if (tablePagination['registrosTable']) tablePagination['registrosTable'].data = data;
+  renderRawData();
+}
+
+function sortTable(tableId, colIdx) {
+  // Simple sort toggle on rendered table rows
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const asc = table.dataset.sortAsc === String(colIdx);
+  table.dataset.sortAsc = asc ? '' : String(colIdx);
+  rows.sort((a,b)=>{
+    const av = a.cells[colIdx]?.textContent.trim()||'';
+    const bv = b.cells[colIdx]?.textContent.trim()||'';
+    const an = parseFloat(av.replace(/[€.,\s]/g,''));
+    const bn = parseFloat(bv.replace(/[€.,\s]/g,''));
+    if (!isNaN(an)&&!isNaN(bn)) return asc?bn-an:an-bn;
+    return asc?bv.localeCompare(av,'es'):av.localeCompare(bv,'es');
+  });
+  rows.forEach(r=>tbody.appendChild(r));
+}
+
+// =====================================================
+// EXPORT
+// =====================================================
+function exportData() {
+  const data = {
+    exportDate: new Date().toISOString(),
+    summary: {
+      totalVentas: DATA.registros.length,
+      totalIngresos: sumBy(DATA.registros,'Price'),
+      totalLeads: DATA.formulario.length,
+      totalPromotores: DATA.promotores.length
+    },
+    registros: DATA.registros,
+    promotores: DATA.promotores,
+    formulario: DATA.formulario
+  };
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download='esencia-paradise-data-'+new Date().toISOString().substring(0,10)+'.json';
+  a.click();
+}
+
+// =====================================================
+// DRAG & DROP UPLOADS
+// =====================================================
+['Registros','Promotores','Formulario'].forEach(name => {
+  const area = document.getElementById('uploadArea'+name);
+  if (!area) return;
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag'); });
+  area.addEventListener('dragleave', () => area.classList.remove('drag'));
+  area.addEventListener('drop', e => {
+    e.preventDefault(); area.classList.remove('drag');
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      uploadedCSVs[name.toLowerCase()] = parseCSV(ev.target.result);
+      area.style.background='rgba(16,185,129,.1)';area.style.borderColor='#10b981';
+      area.querySelector('p').textContent='✓ '+file.name;
+      checkUploadReady();
+    };
+    reader.readAsText(file,'UTF-8');
+  });
+});
+
+// =====================================================
+// INIT
+// =====================================================
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('loadingText').textContent = 'Conectando con n8n...';
+  refreshData();
+});
+</script>
+</body>
+</html>
