@@ -22,8 +22,6 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-
-/* LAYOUT */
 .layout{display:flex;height:100vh;overflow:hidden}
 .sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;z-index:10}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
@@ -59,11 +57,29 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .status-badge.err{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
 .status-badge.loading{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
 
+/* TIME FILTER BAR */
+.filter-bar{background:var(--card);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;flex-shrink:0}
+.filter-bar-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+.preset-chips{display:flex;gap:4px;flex-wrap:wrap}
+.chip{padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--card2);color:var(--text2);transition:all .15s;white-space:nowrap}
+.chip:hover{border-color:var(--primary);color:var(--primary-light)}
+.chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.filter-divider{width:1px;height:20px;background:var(--border);flex-shrink:0}
+.filter-custom{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.filter-custom label{font-size:11px;color:var(--text2)}
+.filter-dt{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text);font-size:12px;outline:none;font-family:inherit}
+.filter-dt:focus{border-color:var(--primary)}
+.filter-promoter-wrap{display:flex;align-items:center;gap:6px;margin-left:auto}
+.filter-promoter-wrap label{font-size:11px;color:var(--text2);white-space:nowrap}
+.filter-select{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;color:var(--text);font-size:12px;outline:none;cursor:pointer;max-width:200px}
+.filter-select:focus{border-color:var(--primary)}
+.active-filter-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(124,58,237,.2);color:var(--primary-light);border:1px solid rgba(124,58,237,.4);white-space:nowrap}
+.active-filter-badge i{cursor:pointer;opacity:.7}
+.active-filter-badge i:hover{opacity:1}
+
 /* TABS */
 .tab-panel{display:none}
 .tab-panel.active{display:block}
-
-/* SECTION TITLE */
 .section-title{font-size:20px;font-weight:800;margin-bottom:4px}
 .section-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
 
@@ -91,16 +107,12 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .kpi-icon.indigo{background:rgba(99,102,241,.2);color:#a5b4fc}
 .kpi-value{font-size:26px;font-weight:800;line-height:1}
 .kpi-label{font-size:11px;color:var(--text2);margin-top:4px;font-weight:500}
-.kpi-change{font-size:11px;margin-top:6px;font-weight:600}
-.kpi-change.up{color:var(--green)}
-.kpi-change.down{color:var(--red)}
 
 /* CHART CARDS */
 .chart-grid{display:grid;gap:14px;margin-bottom:24px}
 .chart-grid-2{grid-template-columns:1fr 1fr}
 .chart-grid-3{grid-template-columns:1fr 1fr 1fr}
 .chart-grid-21{grid-template-columns:2fr 1fr}
-.chart-grid-12{grid-template-columns:1fr 2fr}
 .chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
 .chart-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .chart-card-title{font-size:14px;font-weight:700}
@@ -124,9 +136,9 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
 .badge-green{background:rgba(16,185,129,.15);color:var(--green)}
 .badge-red{background:rgba(239,68,68,.15);color:var(--red)}
-.badge-amber{background:rgba(245,158,11,.15);color:var(--amber)}
 .badge-purple{background:rgba(124,58,237,.15);color:var(--primary-light)}
 .badge-cyan{background:rgba(6,182,212,.15);color:var(--cyan)}
+.badge-amber{background:rgba(245,158,11,.15);color:var(--amber)}
 .badge-gray{background:rgba(148,163,184,.1);color:var(--text2)}
 .table-footer{padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);font-size:12px;color:var(--text2)}
 .pagination{display:flex;gap:4px}
@@ -134,8 +146,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .page-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 .page-btn:hover:not(.active){border-color:var(--primary);color:var(--primary-light)}
 
-/* PROMOTOR RANK */
-.rank-table{width:100%}
+/* RANK */
 .rank-row{display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid rgba(30,30,58,.5)}
 .rank-row:last-child{border-bottom:none}
 .rank-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
@@ -147,7 +158,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .rank-code{font-size:11px;color:var(--text2)}
 .rank-value{font-weight:700;font-size:14px;color:var(--primary-light)}
 
-/* LOADING OVERLAY */
+/* LOADING */
 .loading-overlay{position:fixed;inset:0;background:rgba(7,7,15,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;transition:opacity .4s}
 .loading-overlay.hidden{opacity:0;pointer-events:none}
 .spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:16px}
@@ -157,9 +168,9 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 /* FUNNEL */
 .funnel{display:flex;flex-direction:column;gap:8px;padding:8px 0}
 .funnel-step{display:flex;align-items:center;gap:12px}
-.funnel-bar-wrap{flex:1;background:var(--card2);border-radius:4px;height:28px;overflow:hidden;position:relative}
+.funnel-bar-wrap{flex:1;background:var(--card2);border-radius:4px;height:28px;overflow:hidden}
 .funnel-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:10px;font-size:12px;font-weight:700;color:#fff;transition:width .8s cubic-bezier(.4,0,.2,1)}
-.funnel-label{width:130px;font-size:12px;color:var(--text2);font-weight:500;text-align:right}
+.funnel-label{width:150px;font-size:12px;color:var(--text2);font-weight:500;text-align:right}
 .funnel-count{width:60px;font-size:13px;font-weight:700;color:var(--text);text-align:right}
 
 /* PROGRESS BAR */
@@ -176,55 +187,29 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .stat-label{font-size:12px;color:var(--text2)}
 .stat-val{font-size:13px;font-weight:700}
 
-/* UPLOAD AREA */
+/* UPLOAD */
 .upload-area{border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px}
 .upload-area:hover,.upload-area.drag{border-color:var(--primary);background:rgba(124,58,237,.05)}
 .upload-area i{font-size:32px;color:var(--primary-light);margin-bottom:8px}
 .upload-area p{font-size:13px;color:var(--text2)}
 .upload-area small{font-size:11px;color:var(--text3)}
 
-/* FILTERS */
-.filter-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.filter-select{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:12px;outline:none;cursor:pointer}
-.filter-select:focus{border-color:var(--primary)}
-
 /* RESPONSIVE */
 @media(max-width:900px){
   .sidebar{display:none}
-  .chart-grid-2,.chart-grid-3,.chart-grid-21,.chart-grid-12{grid-template-columns:1fr}
+  .chart-grid-2,.chart-grid-3,.chart-grid-21{grid-template-columns:1fr}
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .filter-bar{padding:10px 12px}
+  .filter-promoter-wrap{margin-left:0}
 }
 @media(max-width:500px){
   .kpi-grid{grid-template-columns:1fr}
   .content{padding:12px}
 }
-
-/* TIMELINE BADGE */
-.timeline-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(124,58,237,.15);color:var(--primary-light)}
-
-/* EMPTY STATE */
-.empty-state{text-align:center;padding:48px 24px;color:var(--text2)}
-.empty-state i{font-size:40px;margin-bottom:12px;color:var(--text3)}
-.empty-state p{font-size:14px}
-
-/* TOOLTIP CUSTOM */
-.tooltip-custom{position:absolute;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;pointer-events:none;z-index:50;white-space:nowrap}
-
-/* GRID COL SPANS */
-.col-span-2{grid-column:span 2}
-.col-span-3{grid-column:span 3}
-
-/* HIGHLIGHT NUMBER */
-.hl{color:var(--primary-light);font-weight:700}
-.hl-g{color:var(--green);font-weight:700}
-.hl-r{color:var(--red);font-weight:700}
-.hl-a{color:var(--amber);font-weight:700}
-
 </style>
 </head>
 <body>
 
-<!-- LOADING OVERLAY -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
   <div class="loading-text" id="loadingText">Conectando con n8n...</div>
@@ -238,24 +223,23 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
       <div class="app-name">Event Analytics</div>
     </div>
     <div class="nav-section">Principal</div>
-    <div class="nav-item active" onclick="showTab('overview')"><i class="fas fa-chart-pie"></i> Overview</div>
-    <div class="nav-item" onclick="showTab('sales')"><i class="fas fa-euro-sign"></i> Ventas & Ingresos</div>
-    <div class="nav-item" onclick="showTab('promotores')"><i class="fas fa-users"></i> Promotores</div>
+    <div class="nav-item active" onclick="showTab('overview',this)"><i class="fas fa-chart-pie"></i> Overview</div>
+    <div class="nav-item" onclick="showTab('sales',this)"><i class="fas fa-euro-sign"></i> Ventas & Ingresos</div>
+    <div class="nav-item" onclick="showTab('promotores',this)"><i class="fas fa-users"></i> Promotores</div>
     <div class="nav-section">Análisis</div>
-    <div class="nav-item" onclick="showTab('leads')"><i class="fas fa-funnel-dollar"></i> Leads & Formulario</div>
-    <div class="nav-item" onclick="showTab('demographics')"><i class="fas fa-venus-mars"></i> Demografía</div>
-    <div class="nav-item" onclick="showTab('geography')"><i class="fas fa-globe-europe"></i> Geografía</div>
-    <div class="nav-item" onclick="showTab('tickets')"><i class="fas fa-ticket-alt"></i> Tickets</div>
+    <div class="nav-item" onclick="showTab('leads',this)"><i class="fas fa-funnel-dollar"></i> Leads & Formulario</div>
+    <div class="nav-item" onclick="showTab('demographics',this)"><i class="fas fa-venus-mars"></i> Demografía</div>
+    <div class="nav-item" onclick="showTab('geography',this)"><i class="fas fa-globe-europe"></i> Geografía</div>
+    <div class="nav-item" onclick="showTab('tickets',this)"><i class="fas fa-ticket-alt"></i> Tickets</div>
     <div class="nav-section">Datos</div>
-    <div class="nav-item" onclick="showTab('rawdata')"><i class="fas fa-table"></i> Datos Raw</div>
-    <div class="nav-item" onclick="showTab('upload')"><i class="fas fa-upload"></i> Cargar CSV</div>
+    <div class="nav-item" onclick="showTab('rawdata',this)"><i class="fas fa-table"></i> Datos Raw</div>
+    <div class="nav-item" onclick="showTab('upload',this)"><i class="fas fa-upload"></i> Cargar CSV</div>
     <div class="sidebar-bottom">
       <div class="sync-info"><span class="sync-dot" id="syncDot"></span><span id="syncText">Sincronizando...</span></div>
       <div style="margin-top:6px;font-size:10px;color:var(--text3);text-align:center" id="lastSync">—</div>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <div class="main">
     <!-- TOPBAR -->
     <div class="topbar">
@@ -270,26 +254,59 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
       </div>
     </div>
 
+    <!-- TIME FILTER BAR -->
+    <div class="filter-bar">
+      <span class="filter-bar-label"><i class="fas fa-clock"></i> Período</span>
+      <div class="preset-chips">
+        <div class="chip" onclick="applyPreset(1/24,this)" title="Última hora">1h</div>
+        <div class="chip" onclick="applyPreset(2/24,this)" title="Últimas 2 horas">2h</div>
+        <div class="chip" onclick="applyPreset(6/24,this)" title="Últimas 6 horas">6h</div>
+        <div class="chip" onclick="applyPreset(12/24,this)" title="Últimas 12 horas">12h</div>
+        <div class="chip" onclick="applyPreset(1,this)" title="Últimas 24 horas">24h</div>
+        <div class="chip" onclick="applyPreset(3,this)" title="Últimos 3 días">3d</div>
+        <div class="chip" onclick="applyPreset(7,this)" title="Últimos 7 días">7d</div>
+        <div class="chip" onclick="applyPreset(30,this)" title="Últimos 30 días">30d</div>
+        <div class="chip active" onclick="applyPreset(null,this)" title="Todo el histórico">Todo</div>
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-custom">
+        <label>Desde</label>
+        <input type="datetime-local" class="filter-dt" id="filterFrom" onchange="applyCustomRange()">
+        <label>Hasta</label>
+        <input type="datetime-local" class="filter-dt" id="filterTo" onchange="applyCustomRange()">
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-promoter-wrap">
+        <label><i class="fas fa-user-tie"></i> Promotor</label>
+        <select class="filter-select" id="filterPromoterGlobal" onchange="applyPromoterFilter()">
+          <option value="">Todos los promotores</option>
+        </select>
+      </div>
+      <div id="activeFilterBadge" style="display:none">
+        <span class="active-filter-badge" id="activeFilterText">—</span>
+      </div>
+    </div>
+
     <!-- CONTENT -->
     <div class="content">
 
-      <!-- ====== OVERVIEW ====== -->
+      <!-- OVERVIEW -->
       <div class="tab-panel active" id="tab-overview">
         <div class="section-title">Overview General</div>
-        <div class="section-sub">Resumen completo del evento en tiempo real</div>
-        <div class="kpi-grid" id="kpiGrid">
+        <div class="section-sub" id="overviewSub">Resumen completo del evento en tiempo real</div>
+        <div class="kpi-grid">
           <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-shopping-cart"></i></div><div class="kpi-value" id="kpi-totalVentas">—</div><div class="kpi-label">Total Ventas</div></div>
           <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-euro-sign"></i></div><div class="kpi-value" id="kpi-totalIngresos">—</div><div class="kpi-label">Ingresos Totales</div></div>
           <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-ticket-alt"></i></div><div class="kpi-value" id="kpi-ticketsActivos">—</div><div class="kpi-label">Tickets Activos</div></div>
-          <div class="kpi-card pink"><div class="kpi-icon pink"><i class="fas fa-star"></i></div><div class="kpi-value" id="kpi-promotoresActivos">—</div><div class="kpi-label">Promotores Activos</div></div>
+          <div class="kpi-card pink"><div class="kpi-icon pink"><i class="fas fa-star"></i></div><div class="kpi-value" id="kpi-promotoresActivos">—</div><div class="kpi-label">Promotores con Ventas</div></div>
           <div class="kpi-card amber"><div class="kpi-icon amber"><i class="fas fa-file-alt"></i></div><div class="kpi-value" id="kpi-totalLeads">—</div><div class="kpi-label">Leads Formulario</div></div>
-          <div class="kpi-card indigo"><div class="kpi-icon indigo"><i class="fas fa-percentage"></i></div><div class="kpi-value" id="kpi-conversion">—</div><div class="kpi-label">Tasa Conversión</div></div>
           <div class="kpi-card orange"><div class="kpi-icon orange"><i class="fas fa-chart-line"></i></div><div class="kpi-value" id="kpi-avgPrice">—</div><div class="kpi-label">Precio Medio</div></div>
           <div class="kpi-card red"><div class="kpi-icon red"><i class="fas fa-undo"></i></div><div class="kpi-value" id="kpi-totalRefunds">—</div><div class="kpi-label">Reembolsos</div></div>
+          <div class="kpi-card indigo"><div class="kpi-icon indigo"><i class="fas fa-globe"></i></div><div class="kpi-value" id="kpi-totalPaises">—</div><div class="kpi-label">Países</div></div>
         </div>
         <div class="chart-grid chart-grid-21">
           <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Ventas Diarias</div><div class="chart-card-sub">Tickets vendidos por día</div></div></div>
+            <div class="chart-card-header"><div><div class="chart-card-title">Ventas en el Tiempo</div><div class="chart-card-sub" id="salesChartSub">Tickets vendidos por período</div></div></div>
             <div class="chart-wrapper" style="height:220px"><canvas id="chartSalesByDay"></canvas></div>
           </div>
           <div class="chart-card">
@@ -309,7 +326,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
         </div>
       </div>
 
-      <!-- ====== SALES ====== -->
+      <!-- SALES -->
       <div class="tab-panel" id="tab-sales">
         <div class="section-title">Ventas & Ingresos</div>
         <div class="section-sub">Análisis completo de facturación y rendimiento comercial</div>
@@ -333,35 +350,35 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
         </div>
         <div class="chart-grid chart-grid-2">
           <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Ingresos por Tipo de Ticket</div><div class="chart-card-sub">Facturación agrupada por categoría</div></div></div>
+            <div class="chart-card-header"><div><div class="chart-card-title">Ingresos por Tipo de Ticket</div></div></div>
             <div class="chart-wrapper" style="height:240px"><canvas id="chartRevenueByTicket"></canvas></div>
           </div>
           <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Precio Medio por Día</div><div class="chart-card-sub">Evolución del ticket medio</div></div></div>
+            <div class="chart-card-header"><div><div class="chart-card-title">Precio Medio por Período</div></div></div>
             <div class="chart-wrapper" style="height:240px"><canvas id="chartAvgPriceByDay"></canvas></div>
           </div>
         </div>
         <div class="chart-card" style="margin-bottom:24px">
-          <div class="chart-card-header"><div><div class="chart-card-title">Ventas por Promotor — Top 20</div><div class="chart-card-sub">Ingresos generados por cada promotor</div></div></div>
+          <div class="chart-card-header"><div><div class="chart-card-title">Ventas por Promotor — Top 20</div><div class="chart-card-sub">Ingresos generados en el período seleccionado</div></div></div>
           <div class="chart-wrapper" style="height:320px"><canvas id="chartRevenueByPromoter"></canvas></div>
         </div>
       </div>
 
-      <!-- ====== PROMOTORES ====== -->
+      <!-- PROMOTORES -->
       <div class="tab-panel" id="tab-promotores">
         <div class="section-title">Promotores</div>
         <div class="section-sub">Rendimiento, comisiones y clasificación de promotores</div>
         <div class="kpi-grid">
           <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-users"></i></div><div class="kpi-value" id="kpi-p-total">—</div><div class="kpi-label">Total Promotores</div></div>
-          <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-check-circle"></i></div><div class="kpi-value" id="kpi-p-activos">—</div><div class="kpi-label">Con Ventas</div></div>
+          <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-check-circle"></i></div><div class="kpi-value" id="kpi-p-activos">—</div><div class="kpi-label">Con Ventas (período)</div></div>
           <div class="kpi-card amber"><div class="kpi-icon amber"><i class="fas fa-coins"></i></div><div class="kpi-value" id="kpi-p-comisiones">—</div><div class="kpi-label">Total Comisiones</div></div>
           <div class="kpi-card pink"><div class="kpi-icon pink"><i class="fas fa-trophy"></i></div><div class="kpi-value" id="kpi-p-topPromotor">—</div><div class="kpi-label">Top Promotor</div></div>
-          <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-shopping-cart"></i></div><div class="kpi-value" id="kpi-p-totalEntradas">—</div><div class="kpi-label">Entradas Vendidas</div></div>
-          <div class="kpi-card orange"><div class="kpi-icon orange"><i class="fas fa-chart-line"></i></div><div class="kpi-value" id="kpi-p-avgComision">—</div><div class="kpi-label">Comisión Media</div></div>
+          <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-shopping-cart"></i></div><div class="kpi-value" id="kpi-p-totalEntradas">—</div><div class="kpi-label">Entradas (período)</div></div>
+          <div class="kpi-card orange"><div class="kpi-icon orange"><i class="fas fa-euro-sign"></i></div><div class="kpi-value" id="kpi-p-totalRev">—</div><div class="kpi-label">Ingresos (período)</div></div>
         </div>
         <div class="chart-grid chart-grid-21">
           <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Ranking — Ventas por Promotor</div><div class="chart-card-sub">Top 15 por número de entradas</div></div></div>
+            <div class="chart-card-header"><div><div class="chart-card-title">Ranking — Ventas en el Período</div><div class="chart-card-sub">Top 15 por número de entradas vendidas</div></div></div>
             <div class="chart-wrapper" style="height:350px"><canvas id="chartPromoterRanking"></canvas></div>
           </div>
           <div class="chart-card">
@@ -371,17 +388,17 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
         </div>
         <div class="chart-grid chart-grid-2">
           <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Comisiones Totales</div><div class="chart-card-sub">A pagar por promotor (top 15)</div></div></div>
+            <div class="chart-card-header"><div><div class="chart-card-title">Comisiones Totales (histórico)</div><div class="chart-card-sub">A pagar por promotor — top 15</div></div></div>
             <div class="chart-wrapper" style="height:280px"><canvas id="chartPromoterComissions"></canvas></div>
           </div>
           <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Online vs Offline</div><div class="chart-card-sub">Distribución de canal por promotor (top 10)</div></div></div>
+            <div class="chart-card-header"><div><div class="chart-card-title">Online vs Offline (histórico)</div><div class="chart-card-sub">Canal por promotor — top 10</div></div></div>
             <div class="chart-wrapper" style="height:280px"><canvas id="chartPromoterChannels"></canvas></div>
           </div>
         </div>
         <div class="data-table-wrap">
           <div class="table-controls">
-            <h3>Tabla Completa de Promotores</h3>
+            <h3>Tabla Completa de Promotores <span style="font-size:11px;color:var(--text3);font-weight:400">(datos históricos)</span></h3>
             <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
               <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchPromoters" placeholder="Buscar promotor..." oninput="filterTable('promotoresTable',this.value)"></div>
               <select class="filter-select" id="filterPromoterStatus" onchange="renderPromotersTable()">
@@ -393,15 +410,15 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
           </div>
           <div style="overflow-x:auto"><table class="data-table" id="promotoresTable">
             <thead><tr>
-              <th onclick="sortTable('promotoresTable',0)"># <i class="fas fa-sort"></i></th>
+              <th onclick="sortTable('promotoresTable',0)">#</th>
               <th onclick="sortTable('promotoresTable',1)">Promotor <i class="fas fa-sort"></i></th>
-              <th onclick="sortTable('promotoresTable',2)">Código</th>
+              <th>Código</th>
               <th onclick="sortTable('promotoresTable',3)">Entradas <i class="fas fa-sort"></i></th>
               <th onclick="sortTable('promotoresTable',4)">Importe <i class="fas fa-sort"></i></th>
               <th onclick="sortTable('promotoresTable',5)">Comisión <i class="fas fa-sort"></i></th>
-              <th onclick="sortTable('promotoresTable',6)">A Pagar</th>
-              <th onclick="sortTable('promotoresTable',7)">Online</th>
-              <th onclick="sortTable('promotoresTable',8)">Offline</th>
+              <th>A Pagar</th>
+              <th>Online</th>
+              <th>Offline</th>
               <th>Estado</th>
             </tr></thead>
             <tbody id="promotoresTableBody"></tbody>
@@ -410,26 +427,24 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
         </div>
       </div>
 
-      <!-- ====== LEADS ====== -->
+      <!-- LEADS -->
       <div class="tab-panel" id="tab-leads">
         <div class="section-title">Leads & Formulario</div>
-        <div class="section-sub">Análisis del formulario de registro y conversión</div>
+        <div class="section-sub">Análisis del formulario de registro</div>
         <div class="kpi-grid">
           <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-file-alt"></i></div><div class="kpi-value" id="kpi-l-total">—</div><div class="kpi-label">Total Registros</div></div>
-          <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-check"></i></div><div class="kpi-value" id="kpi-l-comprados">—</div><div class="kpi-label">Han Comprado</div></div>
-          <div class="kpi-card red"><div class="kpi-icon red"><i class="fas fa-times"></i></div><div class="kpi-value" id="kpi-l-noComprado">—</div><div class="kpi-label">No Comprados</div></div>
-          <div class="kpi-card amber"><div class="kpi-icon amber"><i class="fas fa-percentage"></i></div><div class="kpi-value" id="kpi-l-conversion">—</div><div class="kpi-label">Conversión</div></div>
-          <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-code"></i></div><div class="kpi-value" id="kpi-l-conCodigo">—</div><div class="kpi-label">Con Código Promotor</div></div>
           <div class="kpi-card pink"><div class="kpi-icon pink"><i class="fas fa-instagram"></i></div><div class="kpi-value" id="kpi-l-topFuente">—</div><div class="kpi-label">Top Fuente</div></div>
+          <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-globe"></i></div><div class="kpi-value" id="kpi-l-paises">—</div><div class="kpi-label">Países</div></div>
+          <div class="kpi-card amber"><div class="kpi-icon amber"><i class="fas fa-music"></i></div><div class="kpi-value" id="kpi-l-topEstilo">—</div><div class="kpi-label">Estilo Top</div></div>
         </div>
         <div class="chart-grid chart-grid-2">
           <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Embudo de Conversión</div><div class="chart-card-sub">Del registro a la compra</div></div></div>
-            <div id="funnelChart" style="padding:8px 0"></div>
+            <div class="chart-card-header"><div><div class="chart-card-title">¿Cómo nos encontraron?</div><div class="chart-card-sub">Fuentes de descubrimiento</div></div></div>
+            <div class="chart-wrapper" style="height:240px"><canvas id="chartHowFound"></canvas></div>
           </div>
           <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">¿Cómo nos encontraron?</div><div class="chart-card-sub">Fuentes de descubrimiento</div></div></div>
-            <div class="chart-wrapper" style="height:220px"><canvas id="chartHowFound"></canvas></div>
+            <div class="chart-card-header"><div><div class="chart-card-title">Registros por Día</div><div class="chart-card-sub">Evolución de leads (Fecha_de_submit)</div></div></div>
+            <div class="chart-wrapper" style="height:240px"><canvas id="chartLeadsByDay"></canvas></div>
           </div>
         </div>
         <div class="chart-grid chart-grid-3">
@@ -447,22 +462,12 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
           </div>
         </div>
         <div class="chart-card" style="margin-bottom:24px">
-          <div class="chart-card-header"><div><div class="chart-card-title">Registros por Día</div><div class="chart-card-sub">Evolución de leads en el tiempo</div></div></div>
-          <div class="chart-wrapper" style="height:200px"><canvas id="chartLeadsByDay"></canvas></div>
-        </div>
-        <div class="chart-grid chart-grid-2">
-          <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Top Códigos de Promotor (Leads)</div><div class="chart-card-sub">Leads por código de promotor</div></div></div>
-            <div id="leadPromoterCodes" style="max-height:280px;overflow-y:auto;padding:4px 0"></div>
-          </div>
-          <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Leads por País</div><div class="chart-card-sub">Top países de origen</div></div></div>
-            <div class="chart-wrapper" style="height:280px"><canvas id="chartLeadsCountry"></canvas></div>
-          </div>
+          <div class="chart-card-header"><div><div class="chart-card-title">Leads por País</div><div class="chart-card-sub">Top países de origen</div></div></div>
+          <div class="chart-wrapper" style="height:280px"><canvas id="chartLeadsCountry"></canvas></div>
         </div>
       </div>
 
-      <!-- ====== DEMOGRAPHICS ====== -->
+      <!-- DEMOGRAPHICS -->
       <div class="tab-panel" id="tab-demographics">
         <div class="section-title">Demografía</div>
         <div class="section-sub">Perfil de asistentes y leads</div>
@@ -486,25 +491,25 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
             <div class="chart-wrapper" style="height:260px"><canvas id="chartGenderByRole"></canvas></div>
           </div>
           <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Balance Leader/Follower</div><div class="chart-card-sub">Ratio en el evento</div></div></div>
+            <div class="chart-card-header"><div><div class="chart-card-title">Balance Leader / Follower</div></div></div>
             <div style="padding:16px 0" id="leaderFollowerBalance"></div>
           </div>
         </div>
       </div>
 
-      <!-- ====== GEOGRAPHY ====== -->
+      <!-- GEOGRAPHY -->
       <div class="tab-panel" id="tab-geography">
         <div class="section-title">Geografía</div>
         <div class="section-sub">Distribución global de asistentes</div>
         <div class="kpi-grid">
-          <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-globe"></i></div><div class="kpi-value" id="kpi-g-paises">—</div><div class="kpi-label">Países Representados</div></div>
+          <div class="kpi-card purple"><div class="kpi-icon purple"><i class="fas fa-globe"></i></div><div class="kpi-value" id="kpi-g-paises">—</div><div class="kpi-label">Países</div></div>
           <div class="kpi-card green"><div class="kpi-icon green"><i class="fas fa-city"></i></div><div class="kpi-value" id="kpi-g-ciudades">—</div><div class="kpi-label">Ciudades</div></div>
           <div class="kpi-card cyan"><div class="kpi-icon cyan"><i class="fas fa-flag"></i></div><div class="kpi-value" id="kpi-g-topPais">—</div><div class="kpi-label">País #1</div></div>
           <div class="kpi-card pink"><div class="kpi-icon pink"><i class="fas fa-building"></i></div><div class="kpi-value" id="kpi-g-topCiudad">—</div><div class="kpi-label">Ciudad #1</div></div>
         </div>
         <div class="chart-grid chart-grid-2">
           <div class="chart-card">
-            <div class="chart-card-header"><div><div class="chart-card-title">Top 20 Países</div><div class="chart-card-sub">Por número de asistentes</div></div></div>
+            <div class="chart-card-header"><div><div class="chart-card-title">Top 20 Países</div></div></div>
             <div class="chart-wrapper" style="height:400px"><canvas id="chartCountries"></canvas></div>
           </div>
           <div class="chart-card">
@@ -518,7 +523,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
         </div>
       </div>
 
-      <!-- ====== TICKETS ====== -->
+      <!-- TICKETS -->
       <div class="tab-panel" id="tab-tickets">
         <div class="section-title">Tickets</div>
         <div class="section-sub">Análisis de tipos de entrada y estado</div>
@@ -539,20 +544,18 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
           </div>
         </div>
         <div class="chart-card" style="margin-bottom:24px">
-          <div class="chart-card-header"><div><div class="chart-card-title">Precio por Tipo de Ticket</div><div class="chart-card-sub">Precio medio y volumen</div></div></div>
+          <div class="chart-card-header"><div><div class="chart-card-title">Precio Medio por Tipo de Ticket</div></div></div>
           <div class="chart-wrapper" style="height:260px"><canvas id="chartTicketPrice"></canvas></div>
         </div>
       </div>
 
-      <!-- ====== RAW DATA ====== -->
+      <!-- RAW DATA -->
       <div class="tab-panel" id="tab-rawdata">
         <div class="section-title">Datos Raw</div>
-        <div class="section-sub">Tablas completas con todos los datos</div>
-
-        <!-- REGISTROS TABLE -->
+        <div class="section-sub">Tablas completas con todos los datos del período seleccionado</div>
         <div class="data-table-wrap">
           <div class="table-controls">
-            <h3>Registros (Ventas)</h3>
+            <h3>Registros (Ventas) — campo fecha: <code style="color:var(--cyan);font-size:11px">Date</code></h3>
             <div style="display:flex;gap:8px;flex-wrap:wrap">
               <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Buscar..." oninput="filterTable('registrosTable',this.value)"></div>
               <select class="filter-select" onchange="filterRegistrosByType(this.value)">
@@ -572,17 +575,15 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
           </table></div>
           <div class="table-footer"><span id="registrosTableInfo">—</span><div class="pagination" id="registrosPagination"></div></div>
         </div>
-
-        <!-- FORMULARIO TABLE -->
         <div class="data-table-wrap">
           <div class="table-controls">
-            <h3>Registro Formulario (Leads)</h3>
+            <h3>Registro Formulario (Leads) — campo fecha: <code style="color:var(--cyan);font-size:11px">Fecha_de_submit</code></h3>
             <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Buscar..." oninput="filterTable('formularioTable',this.value)"></div>
           </div>
           <div style="overflow-x:auto"><table class="data-table" id="formularioTable">
             <thead><tr>
               <th>Nombre</th><th>Email</th><th>País</th><th>Rol Baile</th><th>Nivel</th>
-              <th>Fuente</th><th>Código Promotor</th><th>¿Compró?</th><th>Fecha</th>
+              <th>Fuente</th><th>Código Promotor</th><th>Fecha</th>
             </tr></thead>
             <tbody id="formularioTableBody"></tbody>
           </table></div>
@@ -590,7 +591,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
         </div>
       </div>
 
-      <!-- ====== UPLOAD ====== -->
+      <!-- UPLOAD -->
       <div class="tab-panel" id="tab-upload">
         <div class="section-title">Cargar CSV Manualmente</div>
         <div class="section-sub">Si n8n no está disponible, carga los datos directamente</div>
@@ -598,27 +599,21 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
           <div>
             <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--primary-light)"><i class="fas fa-shopping-cart"></i> Registros (Ventas)</div>
             <div class="upload-area" onclick="document.getElementById('uploadRegistros').click()" id="uploadAreaRegistros">
-              <i class="fas fa-file-csv"></i>
-              <p>Registros.csv</p>
-              <small>Clic o arrastra el archivo aquí</small>
+              <i class="fas fa-file-csv"></i><p>Registros.csv</p><small>Clic o arrastra</small>
             </div>
             <input type="file" id="uploadRegistros" accept=".csv" style="display:none" onchange="handleCSVUpload('registros',this)">
           </div>
           <div>
             <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--secondary)"><i class="fas fa-users"></i> Promotores</div>
             <div class="upload-area" onclick="document.getElementById('uploadPromotores').click()" id="uploadAreaPromotores">
-              <i class="fas fa-file-csv"></i>
-              <p>Promotores.csv</p>
-              <small>Clic o arrastra el archivo aquí</small>
+              <i class="fas fa-file-csv"></i><p>Promotores.csv</p><small>Clic o arrastra</small>
             </div>
             <input type="file" id="uploadPromotores" accept=".csv" style="display:none" onchange="handleCSVUpload('promotores',this)">
           </div>
           <div>
             <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--cyan)"><i class="fas fa-file-alt"></i> Registro Formulario</div>
             <div class="upload-area" onclick="document.getElementById('uploadFormulario').click()" id="uploadAreaFormulario">
-              <i class="fas fa-file-csv"></i>
-              <p>Registro Formulario.csv</p>
-              <small>Clic o arrastra el archivo aquí</small>
+              <i class="fas fa-file-csv"></i><p>Registro Formulario.csv</p><small>Clic o arrastra</small>
             </div>
             <input type="file" id="uploadFormulario" accept=".csv" style="display:none" onchange="handleCSVUpload('formulario',this)">
           </div>
@@ -632,12 +627,13 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 </div><!-- /layout -->
 
 <script>
-// =====================================================
-// GLOBAL STATE
-// =====================================================
+// ============================================================
+// STATE
+// ============================================================
 let DATA = { registros: [], promotores: [], formulario: [] };
+let FILTER = { days: null, from: null, to: null, promoter: '' };
 let CHARTS = {};
-let uploadedCSVs = { registros: null, promotores: null, formulario: null };
+let uploadedCSVs = {};
 let tablePagination = {};
 const PAGE_SIZE = 50;
 
@@ -647,22 +643,136 @@ const COLORS = [
   '#8b5cf6','#f472b6','#22d3ee','#34d399','#fbbf24',
   '#fb7185','#60a5fa','#a3e635','#fb923c','#818cf8'
 ];
+const getColor = i => COLORS[i % COLORS.length];
 
-function getColor(i){ return COLORS[i % COLORS.length]; }
-
-// =====================================================
+// ============================================================
 // NAVIGATION
-// =====================================================
-function showTab(name) {
+// ============================================================
+function showTab(name, el) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
-  event.currentTarget.classList.add('active');
+  if (el) el.classList.add('active');
 }
 
-// =====================================================
+// ============================================================
+// TIME FILTER
+// ============================================================
+function applyPreset(days, el) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('filterFrom').value = '';
+  document.getElementById('filterTo').value = '';
+  FILTER.days = days;
+  FILTER.from = null;
+  FILTER.to = null;
+  updateFilterBadge();
+  renderAll();
+}
+
+function applyCustomRange() {
+  const from = document.getElementById('filterFrom').value;
+  const to = document.getElementById('filterTo').value;
+  if (!from && !to) return;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  FILTER.days = null;
+  FILTER.from = from ? new Date(from) : null;
+  FILTER.to = to ? new Date(to) : null;
+  updateFilterBadge();
+  renderAll();
+}
+
+function applyPromoterFilter() {
+  FILTER.promoter = document.getElementById('filterPromoterGlobal').value;
+  updateFilterBadge();
+  renderAll();
+}
+
+function clearFilter() {
+  FILTER = { days: null, from: null, to: null, promoter: '' };
+  document.getElementById('filterFrom').value = '';
+  document.getElementById('filterTo').value = '';
+  document.getElementById('filterPromoterGlobal').value = '';
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  document.querySelector('.chip:last-child').classList.add('active'); // "Todo"
+  updateFilterBadge();
+  renderAll();
+}
+
+function updateFilterBadge() {
+  const badge = document.getElementById('activeFilterBadge');
+  const text = document.getElementById('activeFilterText');
+  const parts = [];
+  if (FILTER.days !== null) {
+    const d = FILTER.days;
+    if (d < 1) parts.push(`Últimas ${Math.round(d*24)}h`);
+    else if (d === 1) parts.push('Últimas 24h');
+    else parts.push(`Últimos ${d}d`);
+  }
+  if (FILTER.from) parts.push(`Desde ${FILTER.from.toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}`);
+  if (FILTER.to) parts.push(`Hasta ${FILTER.to.toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}`);
+  if (FILTER.promoter) parts.push(`Promotor: ${FILTER.promoter}`);
+
+  if (parts.length > 0) {
+    text.innerHTML = `<i class="fas fa-filter"></i> ${parts.join(' · ')} <i class="fas fa-times" onclick="clearFilter()"></i>`;
+    badge.style.display = 'inline-flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ============================================================
+// FILTERED DATA
+// ============================================================
+function getFiltered() {
+  const now = new Date();
+  let cutFrom = null, cutTo = null;
+
+  if (FILTER.days !== null) {
+    cutFrom = new Date(now - FILTER.days * 24 * 3600 * 1000);
+  }
+  if (FILTER.from) cutFrom = FILTER.from;
+  if (FILTER.to) cutTo = FILTER.to;
+
+  function filterByDate(arr, dateField) {
+    if (!cutFrom && !cutTo) return arr;
+    return arr.filter(item => {
+      const raw = item[dateField];
+      if (!raw) return false;
+      const d = new Date(raw);
+      if (isNaN(d)) return false;
+      if (cutFrom && d < cutFrom) return false;
+      if (cutTo && d > cutTo) return false;
+      return true;
+    });
+  }
+
+  let registros = filterByDate(DATA.registros, 'Date');
+  let formulario = filterByDate(DATA.formulario, 'Fecha_de_submit');
+  // promotores use Last_updated only for table display; rankings derived from registros
+  let promotores = DATA.promotores;
+
+  if (FILTER.promoter) {
+    registros = registros.filter(r => r.Promoter === FILTER.promoter);
+  }
+
+  return { registros, promotores, formulario };
+}
+
+function getFilterLabel() {
+  if (FILTER.days !== null) {
+    const d = FILTER.days;
+    if (d < 1) return `Últimas ${Math.round(d*24)} horas`;
+    if (d === 1) return 'Últimas 24 horas';
+    return `Últimos ${d} días`;
+  }
+  if (FILTER.from || FILTER.to) return 'Rango personalizado';
+  return 'Todo el histórico';
+}
+
+// ============================================================
 // DATA LOADING
-// =====================================================
+// ============================================================
 async function refreshData() {
   const icon = document.getElementById('refreshIcon');
   icon.classList.add('fa-spin');
@@ -672,19 +782,17 @@ async function refreshData() {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const raw = await res.json();
     parseN8NData(raw);
+    populatePromoterFilter();
     renderAll();
     setStatus('ok', 'Conectado');
-    document.getElementById('lastSync').textContent = 'Última sync: ' + new Date().toLocaleTimeString('es');
+    document.getElementById('lastSync').textContent = 'Sync: ' + new Date().toLocaleTimeString('es');
     document.getElementById('syncDot').classList.remove('error');
     document.getElementById('syncText').textContent = 'Sincronizado';
   } catch(e) {
-    setStatus('err', 'Error: ' + e.message);
+    setStatus('err', 'Error');
     document.getElementById('syncDot').classList.add('error');
-    document.getElementById('syncText').textContent = 'Error conexión';
-    // Try demo data if available from uploads
-    if (uploadedCSVs.registros || uploadedCSVs.promotores || uploadedCSVs.formulario) {
-      applyUploadedData();
-    }
+    document.getElementById('syncText').textContent = 'Sin conexión';
+    if (uploadedCSVs.registros || uploadedCSVs.promotores || uploadedCSVs.formulario) applyUploadedData();
   } finally {
     icon.classList.remove('fa-spin');
     hideLoading();
@@ -692,12 +800,18 @@ async function refreshData() {
 }
 
 function parseN8NData(raw) {
-  // n8n returns array of items — each item may have a json property (n8n format) or be direct
   const items = Array.isArray(raw) ? raw : (raw.data || []);
   const flat = items.map(i => i.json || i);
   DATA.registros = flat.filter(i => 'Locator' in i && i.Locator);
   DATA.promotores = flat.filter(i => 'Promotor' in i && 'Codigo' in i);
-  DATA.formulario = flat.filter(i => 'Dance_role' in i || 'Nombre' in i);
+  DATA.formulario = flat.filter(i => 'Dance_role' in i || ('Nombre' in i && !('Locator' in i) && !('Promotor' in i)));
+}
+
+function populatePromoterFilter() {
+  const sel = document.getElementById('filterPromoterGlobal');
+  const promoters = [...new Set(DATA.registros.filter(r=>r.Promoter).map(r=>r.Promoter))].sort();
+  sel.innerHTML = '<option value="">Todos los promotores</option>' +
+    promoters.map(p => `<option value="${p}">${p}</option>`).join('');
 }
 
 function setStatus(type, text) {
@@ -705,14 +819,11 @@ function setStatus(type, text) {
   b.className = 'status-badge ' + (type==='ok'?'ok':type==='err'?'err':'loading');
   document.getElementById('statusText').textContent = text;
 }
+function hideLoading() { document.getElementById('loadingOverlay').classList.add('hidden'); }
 
-function hideLoading() {
-  document.getElementById('loadingOverlay').classList.add('hidden');
-}
-
-// =====================================================
+// ============================================================
 // CSV UPLOAD
-// =====================================================
+// ============================================================
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g,''));
@@ -723,137 +834,122 @@ function parseCSV(text) {
     return obj;
   });
 }
-
 function parseCSVLine(line) {
-  const result = []; let cur = ''; let inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (c==='"') { inQ=!inQ; }
-    else if (c===',' && !inQ) { result.push(cur); cur=''; }
-    else { cur+=c; }
+  const result=[]; let cur=''; let inQ=false;
+  for (let i=0;i<line.length;i++) {
+    const c=line[i];
+    if(c==='"'){inQ=!inQ;}
+    else if(c===','&&!inQ){result.push(cur);cur='';}
+    else{cur+=c;}
   }
   result.push(cur);
   return result;
 }
-
 function handleCSVUpload(type, input) {
-  const file = input.files[0];
-  if (!file) return;
+  const file = input.files[0]; if(!file) return;
   const reader = new FileReader();
   reader.onload = e => {
     uploadedCSVs[type] = parseCSV(e.target.result);
-    const area = document.getElementById('uploadArea' + type.charAt(0).toUpperCase() + type.slice(1));
-    if (area) {
-      area.style.background = 'rgba(16,185,129,.1)';
-      area.style.borderColor = '#10b981';
-      area.querySelector('p').textContent = '✓ ' + file.name;
-    }
+    const capName = type.charAt(0).toUpperCase()+type.slice(1);
+    const area = document.getElementById('uploadArea'+capName);
+    if(area){area.style.background='rgba(16,185,129,.1)';area.style.borderColor='#10b981';area.querySelector('p').textContent='✓ '+file.name;}
     checkUploadReady();
   };
-  reader.readAsText(file, 'UTF-8');
+  reader.readAsText(file,'UTF-8');
 }
-
 function checkUploadReady() {
-  const ready = uploadedCSVs.registros || uploadedCSVs.promotores || uploadedCSVs.formulario;
-  document.getElementById('applyBtn').disabled = !ready;
+  document.getElementById('applyBtn').disabled = !(uploadedCSVs.registros||uploadedCSVs.promotores||uploadedCSVs.formulario);
 }
-
 function applyUploadedData() {
-  if (uploadedCSVs.registros) DATA.registros = uploadedCSVs.registros;
-  if (uploadedCSVs.promotores) DATA.promotores = uploadedCSVs.promotores;
-  if (uploadedCSVs.formulario) DATA.formulario = uploadedCSVs.formulario;
-  renderAll();
-  setStatus('ok', 'CSV Cargado');
-  hideLoading();
-  document.getElementById('uploadStatus').innerHTML = '<span style="color:var(--green)"><i class="fas fa-check-circle"></i> Datos aplicados correctamente</span>';
+  if(uploadedCSVs.registros) DATA.registros=uploadedCSVs.registros;
+  if(uploadedCSVs.promotores) DATA.promotores=uploadedCSVs.promotores;
+  if(uploadedCSVs.formulario) DATA.formulario=uploadedCSVs.formulario;
+  populatePromoterFilter();
+  renderAll(); setStatus('ok','CSV Cargado'); hideLoading();
+  document.getElementById('uploadStatus').innerHTML='<span style="color:var(--green)"><i class="fas fa-check-circle"></i> Datos aplicados</span>';
 }
 
-// =====================================================
+// ============================================================
 // HELPERS
-// =====================================================
+// ============================================================
 function parseEuro(str) {
-  if (!str && str !== 0) return 0;
-  if (typeof str === 'number') return str;
-  return parseFloat(String(str).replace(/[€\s.]/g,'').replace(',','.')) || 0;
+  if(!str&&str!==0) return 0;
+  if(typeof str==='number') return str;
+  return parseFloat(String(str).replace(/[€\s.]/g,'').replace(',','.').replace(/\./g,'').replace(',','.')) || 0;
+}
+function formatEuro(n){return new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);}
+function formatNum(n){return new Intl.NumberFormat('es-ES').format(n);}
+function formatDate(d){if(!d)return'—';const dt=new Date(d);return isNaN(dt)?d:dt.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'});}
+function formatDateTime(d){if(!d)return'—';const dt=new Date(d);return isNaN(dt)?d:dt.toLocaleString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});}
+function countBy(arr,key){return arr.reduce((a,i)=>{const k=typeof key==='function'?key(i):(i[key]||'?');a[k]=(a[k]||0)+1;return a;},{});}
+function sumBy(arr,key){return arr.reduce((s,i)=>s+parseEuro(i[key]),0);}
+function sortObjByVal(obj,desc=true){return Object.entries(obj).sort((a,b)=>desc?b[1]-a[1]:a[1]-b[1]);}
+function topN(obj,n){return sortObjByVal(obj).slice(0,n);}
+function destroyChart(id){if(CHARTS[id]){CHARTS[id].destroy();delete CHARTS[id];}}
+function makeChart(id,config){destroyChart(id);const ctx=document.getElementById(id);if(!ctx)return;CHARTS[id]=new Chart(ctx,config);}
+
+// Adaptive time grouping: hours if ≤3 days, else days
+function groupByTime(arr, dateField) {
+  const useHours = FILTER.days !== null && FILTER.days <= 3;
+  const groups = {};
+  arr.forEach(item => {
+    const raw = item[dateField];
+    if (!raw) return;
+    const d = new Date(raw);
+    if (isNaN(d)) return;
+    let key;
+    if (useHours) {
+      key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:00`;
+    } else {
+      key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(item);
+  });
+  return { groups, useHours };
 }
 
-function formatEuro(n) {
-  return new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
+function formatTimeLabel(key, useHours) {
+  if (useHours) {
+    const d = new Date(key);
+    return isNaN(d) ? key : d.toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  }
+  const d = new Date(key+'T00:00:00');
+  return isNaN(d) ? key : d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'});
 }
 
-function formatNum(n) {
-  return new Intl.NumberFormat('es-ES').format(n);
+function cleanTicket(t){
+  if(!t)return'Desconocido';
+  if(t.includes('Full Pass'))return'Full Pass';
+  if(t.includes('Follower Pro'))return'Follower Pro';
+  if(t.includes('Follower Amateur'))return'Follower Amateur';
+  if(t.includes('Leader Pro'))return'Leader Pro';
+  if(t.includes('Leader Amateur'))return'Leader Amateur';
+  if(t.includes('Room')||t.includes('room')||t.includes('Deluxe')||t.includes('Standard'))return'Habitación';
+  return t.replace(/[✅🎫🏆]/g,'').trim().substring(0,30)||'Otro';
 }
 
-function formatDate(d) {
-  if (!d) return '—';
-  const dt = new Date(d);
-  return isNaN(dt) ? d : dt.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'});
-}
-
-function groupBy(arr, key) {
-  return arr.reduce((acc, item) => {
-    const k = item[key] || 'Desconocido';
-    acc[k] = (acc[k] || []);
-    acc[k].push(item);
-    return acc;
-  }, {});
-}
-
-function countBy(arr, key) {
-  return arr.reduce((acc,item) => {
-    const k = item[key] || 'Desconocido';
-    acc[k] = (acc[k]||0)+1;
-    return acc;
-  }, {});
-}
-
-function sumBy(arr, key) {
-  return arr.reduce((s,i) => s + parseEuro(i[key]), 0);
-}
-
-function sortObjByVal(obj, desc=true) {
-  return Object.entries(obj).sort((a,b) => desc ? b[1]-a[1] : a[1]-b[1]);
-}
-
-function topN(obj, n) {
-  return sortObjByVal(obj).slice(0,n);
-}
-
-function destroyChart(id) {
-  if (CHARTS[id]) { CHARTS[id].destroy(); delete CHARTS[id]; }
-}
-
-function makeChart(id, config) {
-  destroyChart(id);
-  const ctx = document.getElementById(id);
-  if (!ctx) return;
-  CHARTS[id] = new Chart(ctx, config);
-}
-
-const defaultLineOpts = {
-  responsive:true, maintainAspectRatio:false,
+const lineOpts = {
+  responsive:true,maintainAspectRatio:false,
   plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},
   scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8',font:{size:11}}},
           y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8',font:{size:11}}}}
 };
-
-const defaultBarOpts = {
-  responsive:true, maintainAspectRatio:false,
+const barOpts = {
+  responsive:true,maintainAspectRatio:false,
   plugins:{legend:{display:false}},
   scales:{x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:11}}},
           y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#94a3b8',font:{size:11}}}}
 };
-
-const defaultDoughnutOpts = {
-  responsive:true, maintainAspectRatio:false,
+const donutOpts = {
+  responsive:true,maintainAspectRatio:false,
   plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:11},boxWidth:12,padding:8}},
            tooltip:{callbacks:{label:ctx=>{const tot=ctx.dataset.data.reduce((a,b)=>a+b,0);return ` ${ctx.label}: ${ctx.raw} (${((ctx.raw/tot)*100).toFixed(1)}%)`;}}}}
 };
 
-// =====================================================
+// ============================================================
 // RENDER ALL
-// =====================================================
+// ============================================================
 function renderAll() {
   renderOverview();
   renderSales();
@@ -865,248 +961,177 @@ function renderAll() {
   renderRawData();
 }
 
-// =====================================================
+// ============================================================
 // OVERVIEW
-// =====================================================
+// ============================================================
 function renderOverview() {
-  const R = DATA.registros;
-  const P = DATA.promotores;
-  const F = DATA.formulario;
+  const {registros:R, formulario:F} = getFiltered();
+  const label = getFilterLabel();
+  document.getElementById('overviewSub').textContent = label + (FILTER.promoter ? ` · Promotor: ${FILTER.promoter}` : '');
+  document.getElementById('salesChartSub').textContent = FILTER.days!==null&&FILTER.days<=3 ? 'Por hora' : 'Por día';
 
-  const totalVentas = R.length;
-  const totalIngresos = sumBy(R, 'Price');
-  const activos = R.filter(r => r.Status === 'Active').length;
-  const promotoresConVentas = P.filter(p => parseEuro(p.Importe_total) > 0).length;
-  const totalLeads = F.length;
-  const comprados = F.filter(f => f.Purchase === 'YES' || f.Purchase === 'SI').length;
-  const conversion = totalLeads > 0 ? ((comprados/totalLeads)*100).toFixed(1) : 0;
-  const avgPrice = totalVentas > 0 ? (totalIngresos/totalVentas) : 0;
-  const refunds = R.filter(r => r.Sale_type && r.Sale_type.toLowerCase().includes('refund')).length;
+  const totalIngresos = sumBy(R,'Price');
+  const activos = R.filter(r=>r.Status==='Active').length;
+  const promsConVentas = new Set(R.filter(r=>r.Promoter).map(r=>r.Promoter)).size;
+  const avgPrice = R.length>0?totalIngresos/R.length:0;
+  const refunds = R.filter(r=>r.Sale_type&&r.Sale_type.toLowerCase().includes('refund')).length;
+  const paises = new Set(R.filter(r=>r.Country).map(r=>r.Country)).size;
 
-  document.getElementById('kpi-totalVentas').textContent = formatNum(totalVentas);
+  document.getElementById('kpi-totalVentas').textContent = formatNum(R.length);
   document.getElementById('kpi-totalIngresos').textContent = formatEuro(totalIngresos);
   document.getElementById('kpi-ticketsActivos').textContent = formatNum(activos);
-  document.getElementById('kpi-promotoresActivos').textContent = formatNum(promotoresConVentas);
-  document.getElementById('kpi-totalLeads').textContent = formatNum(totalLeads);
-  document.getElementById('kpi-conversion').textContent = conversion + '%';
+  document.getElementById('kpi-promotoresActivos').textContent = formatNum(promsConVentas);
+  document.getElementById('kpi-totalLeads').textContent = formatNum(F.length);
   document.getElementById('kpi-avgPrice').textContent = formatEuro(avgPrice);
   document.getElementById('kpi-totalRefunds').textContent = formatNum(refunds);
+  document.getElementById('kpi-totalPaises').textContent = formatNum(paises);
 
-  // Sales by day
-  const byDay = countBy(R, r => r.Date ? r.Date.substring(0,10) : 'N/A');
-  const days = Object.keys(byDay).filter(d=>d!=='N/A').sort();
-  makeChart('chartSalesByDay', {
-    type:'bar',
-    data:{labels:days.map(d=>new Date(d).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})),
-          datasets:[{data:days.map(d=>byDay[d]),backgroundColor:COLORS[0]+'99',borderColor:COLORS[0],borderWidth:2,borderRadius:4}]},
-    options:{...defaultBarOpts, plugins:{...defaultBarOpts.plugins, legend:{display:false}}}
-  });
+  const {groups, useHours} = groupByTime(R, 'Date');
+  const keys = Object.keys(groups).sort();
+  makeChart('chartSalesByDay',{type:'bar',data:{
+    labels:keys.map(k=>formatTimeLabel(k,useHours)),
+    datasets:[{data:keys.map(k=>groups[k].length),backgroundColor:COLORS[0]+'99',borderColor:COLORS[0],borderWidth:2,borderRadius:4}]},
+    options:{...barOpts}});
 
-  // Sale type donut
-  const saleTypes = countBy(R, 'Sale_type');
-  makeChart('chartSaleType', {
-    type:'doughnut',
-    data:{labels:Object.keys(saleTypes),datasets:[{data:Object.values(saleTypes),backgroundColor:COLORS.slice(0,Object.keys(saleTypes).length),borderWidth:0,hoverOffset:8}]},
-    options:{...defaultDoughnutOpts}
-  });
+  const saleTypes = countBy(R,'Sale_type');
+  makeChart('chartSaleType',{type:'doughnut',data:{
+    labels:Object.keys(saleTypes),datasets:[{data:Object.values(saleTypes),backgroundColor:COLORS.slice(0,Object.keys(saleTypes).length),borderWidth:0,hoverOffset:8}]},
+    options:{...donutOpts}});
 
-  // Top promoters bar
-  const byPromoter = countBy(R.filter(r=>r.Promoter), 'Promoter');
-  const top = topN(byPromoter, 10);
-  makeChart('chartTopPromoters', {
-    type:'bar',
-    data:{labels:top.map(x=>x[0]),datasets:[{data:top.map(x=>x[1]),backgroundColor:top.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y', plugins:{legend:{display:false}}}
-  });
+  const byPromoter = countBy(R.filter(r=>r.Promoter),'Promoter');
+  const top = topN(byPromoter,10);
+  makeChart('chartTopPromoters',{type:'bar',data:{
+    labels:top.map(x=>x[0]),datasets:[{data:top.map(x=>x[1]),backgroundColor:top.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...barOpts,indexAxis:'y'}});
 
-  // Ticket types donut
-  const cleanTicket = t => {
-    if (!t) return 'Desconocido';
-    if (t.includes('Full Pass')) return 'Full Pass';
-    if (t.includes('Follower Pro')) return 'Follower Pro';
-    if (t.includes('Follower Amateur')) return 'Follower Amateur';
-    if (t.includes('Leader Pro')) return 'Leader Pro';
-    if (t.includes('Leader Amateur')) return 'Leader Amateur';
-    if (t.includes('Room') || t.includes('room')) return 'Habitación';
-    return t.substring(0,30);
-  };
-  const ticketCounts = countBy(R.map(r=>({...r,_ticket:cleanTicket(r.Ticket)})), '_ticket');
-  makeChart('chartTicketTypes', {
-    type:'doughnut',
-    data:{labels:Object.keys(ticketCounts),datasets:[{data:Object.values(ticketCounts),backgroundColor:COLORS.slice(0,Object.keys(ticketCounts).length),borderWidth:0,hoverOffset:8}]},
-    options:{...defaultDoughnutOpts}
-  });
+  const ticketCounts = countBy(R.map(r=>({...r,_t:cleanTicket(r.Ticket)})),'_t');
+  makeChart('chartTicketTypes',{type:'doughnut',data:{
+    labels:Object.keys(ticketCounts),datasets:[{data:Object.values(ticketCounts),backgroundColor:COLORS.slice(0,Object.keys(ticketCounts).length),borderWidth:0,hoverOffset:8}]},
+    options:{...donutOpts}});
 }
 
-// =====================================================
-// SALES & REVENUE
-// =====================================================
+// ============================================================
+// SALES
+// ============================================================
 function renderSales() {
-  const R = DATA.registros;
-  const online = R.filter(r => r.Sale_type === 'promoterOnline');
-  const offline = R.filter(r => r.Sale_type === 'promoterOffline' || r.Sale_type === 'offline');
-  const goandance = R.filter(r => r.Sale_type === 'goandance');
-  const totalIngresos = sumBy(R,'Price');
-  const avgTicket = R.length > 0 ? totalIngresos/R.length : 0;
+  const {registros:R} = getFiltered();
+  const online=R.filter(r=>r.Sale_type==='promoterOnline');
+  const offline=R.filter(r=>r.Sale_type&&(r.Sale_type.includes('Offline')||r.Sale_type.includes('offline')));
+  const goandance=R.filter(r=>r.Sale_type==='goandance');
+  const totalIngresos=sumBy(R,'Price');
+  const avg=R.length>0?totalIngresos/R.length:0;
 
-  document.getElementById('kpi-s-total').textContent = formatEuro(totalIngresos);
-  document.getElementById('kpi-s-ventas').textContent = formatNum(R.length);
-  document.getElementById('kpi-s-online').textContent = formatNum(online.length);
-  document.getElementById('kpi-s-offline').textContent = formatNum(offline.length);
-  document.getElementById('kpi-s-goandance').textContent = formatNum(goandance.length);
-  document.getElementById('kpi-s-avgTicket').textContent = formatEuro(avgTicket);
+  document.getElementById('kpi-s-total').textContent=formatEuro(totalIngresos);
+  document.getElementById('kpi-s-ventas').textContent=formatNum(R.length);
+  document.getElementById('kpi-s-online').textContent=formatNum(online.length);
+  document.getElementById('kpi-s-offline').textContent=formatNum(offline.length);
+  document.getElementById('kpi-s-goandance').textContent=formatNum(goandance.length);
+  document.getElementById('kpi-s-avgTicket').textContent=formatEuro(avg);
 
-  // Revenue accumulated
-  const byDay = {};
-  R.forEach(r => {
-    const d = r.Date ? r.Date.substring(0,10) : null;
-    if (d) byDay[d] = (byDay[d]||0) + parseEuro(r.Price);
-  });
-  const days = Object.keys(byDay).sort();
-  let cum = 0;
-  const cumData = days.map(d => { cum += byDay[d]; return cum; });
-  makeChart('chartRevenueAccum', {
-    type:'line',
-    data:{labels:days.map(d=>new Date(d).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})),
-          datasets:[{data:cumData,borderColor:COLORS[0],backgroundColor:COLORS[0]+'22',fill:true,tension:.4,pointRadius:3}]},
-    options:{...defaultLineOpts}
-  });
+  const {groups,useHours}=groupByTime(R,'Date');
+  const days=Object.keys(groups).sort();
+  let cum=0;
+  const cumData=days.map(k=>{cum+=groups[k].reduce((s,r)=>s+parseEuro(r.Price),0);return Math.round(cum);});
+  makeChart('chartRevenueAccum',{type:'line',data:{
+    labels:days.map(k=>formatTimeLabel(k,useHours)),
+    datasets:[{data:cumData,borderColor:COLORS[0],backgroundColor:COLORS[0]+'22',fill:true,tension:.4,pointRadius:3}]},
+    options:{...lineOpts}});
 
-  // Revenue by channel
-  makeChart('chartRevenueByChannel', {
-    type:'doughnut',
-    data:{labels:['Promoter Online','Promoter Offline','GoAndDance'],
-          datasets:[{data:[sumBy(online,'Price'),sumBy(offline,'Price'),sumBy(goandance,'Price')],
-                     backgroundColor:[COLORS[0],COLORS[1],COLORS[2]],borderWidth:0,hoverOffset:8}]},
-    options:{...defaultDoughnutOpts}
-  });
+  makeChart('chartRevenueByChannel',{type:'doughnut',data:{
+    labels:['Promoter Online','Promoter Offline','GoAndDance'],
+    datasets:[{data:[sumBy(online,'Price'),sumBy(offline,'Price'),sumBy(goandance,'Price')],backgroundColor:[COLORS[0],COLORS[1],COLORS[2]],borderWidth:0,hoverOffset:8}]},
+    options:{...donutOpts}});
 
-  // Revenue by ticket type
-  const cleanTicket = t => {
-    if (!t) return 'Otro';
-    if (t.includes('Full Pass')) return 'Full Pass';
-    if (t.includes('Follower Pro')) return 'Follower Pro';
-    if (t.includes('Follower Amateur')) return 'Follower Amateur';
-    if (t.includes('Leader Pro')) return 'Leader Pro';
-    if (t.includes('Leader Amateur')) return 'Leader Amateur';
-    if (t.includes('Room')||t.includes('room')) return 'Habitación';
-    return t.substring(0,25);
-  };
-  const revByTicket = {};
-  R.forEach(r => {
-    const t = cleanTicket(r.Ticket);
-    revByTicket[t] = (revByTicket[t]||0) + parseEuro(r.Price);
-  });
-  const rtSorted = sortObjByVal(revByTicket);
-  makeChart('chartRevenueByTicket', {
-    type:'bar',
-    data:{labels:rtSorted.map(x=>x[0]),
-          datasets:[{data:rtSorted.map(x=>x[1]),backgroundColor:rtSorted.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y'}
-  });
+  const revByTicket={};
+  R.forEach(r=>{const t=cleanTicket(r.Ticket);revByTicket[t]=(revByTicket[t]||0)+parseEuro(r.Price);});
+  const rtSorted=sortObjByVal(revByTicket);
+  makeChart('chartRevenueByTicket',{type:'bar',data:{
+    labels:rtSorted.map(x=>x[0]),datasets:[{data:rtSorted.map(x=>x[1]),backgroundColor:rtSorted.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...barOpts,indexAxis:'y'}});
 
-  // Avg price by day
-  const avgByDay = {};
-  const cntByDay = {};
-  R.forEach(r => {
-    const d = r.Date ? r.Date.substring(0,10) : null;
-    if (d && parseEuro(r.Price) > 0) {
-      avgByDay[d] = (avgByDay[d]||0) + parseEuro(r.Price);
-      cntByDay[d] = (cntByDay[d]||0) + 1;
-    }
-  });
-  const daysAvg = Object.keys(avgByDay).sort();
-  makeChart('chartAvgPriceByDay', {
-    type:'line',
-    data:{labels:daysAvg.map(d=>new Date(d).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})),
-          datasets:[{data:daysAvg.map(d=>Math.round(avgByDay[d]/cntByDay[d])),borderColor:COLORS[4],backgroundColor:COLORS[4]+'22',fill:true,tension:.4,pointRadius:3}]},
-    options:{...defaultLineOpts}
-  });
+  const avgGrp={};const cntGrp={};
+  R.forEach(r=>{const{groups:g2,useHours:uh}=groupByTime([r],'Date');Object.keys(g2).forEach(k=>{
+    const p=parseEuro(r.Price);if(p>0){avgGrp[k]=(avgGrp[k]||0)+p;cntGrp[k]=(cntGrp[k]||0)+1;}});});
+  const avgDays=Object.keys(avgGrp).sort();
+  makeChart('chartAvgPriceByDay',{type:'line',data:{
+    labels:avgDays.map(k=>formatTimeLabel(k,FILTER.days!==null&&FILTER.days<=3)),
+    datasets:[{data:avgDays.map(k=>Math.round(avgGrp[k]/cntGrp[k])),borderColor:COLORS[4],backgroundColor:COLORS[4]+'22',fill:true,tension:.4,pointRadius:3}]},
+    options:{...lineOpts}});
 
-  // Revenue by promoter top 20
-  const revByProm = {};
-  R.filter(r=>r.Promoter).forEach(r => {
-    revByProm[r.Promoter] = (revByProm[r.Promoter]||0) + parseEuro(r.Price);
-  });
-  const topProm = sortObjByVal(revByProm).slice(0,20);
-  makeChart('chartRevenueByPromoter', {
-    type:'bar',
-    data:{labels:topProm.map(x=>x[0]),
-          datasets:[{data:topProm.map(x=>x[1]),backgroundColor:topProm.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y'}
-  });
+  const revByProm={};
+  R.filter(r=>r.Promoter).forEach(r=>{revByProm[r.Promoter]=(revByProm[r.Promoter]||0)+parseEuro(r.Price);});
+  const topProm=sortObjByVal(revByProm).slice(0,20);
+  makeChart('chartRevenueByPromoter',{type:'bar',data:{
+    labels:topProm.map(x=>x[0]),datasets:[{data:topProm.map(x=>x[1]),backgroundColor:topProm.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...barOpts,indexAxis:'y'}});
 }
 
-// =====================================================
+// ============================================================
 // PROMOTORES
-// =====================================================
+// ============================================================
 function renderPromoters() {
-  const P = DATA.promotores;
-  const conVentas = P.filter(p => parseEuro(p.Importe_total) > 0);
-  const totalComisiones = P.reduce((s,p) => s + parseEuro(p.Comision_real), 0);
-  const totalEntradas = P.reduce((s,p) => s + (parseInt(p.Total_entradas)||0), 0);
-  const topP = [...P].sort((a,b) => parseEuro(b.Importe_total)-parseEuro(a.Importe_total))[0];
-  const avgComision = conVentas.length > 0 ? totalComisiones/conVentas.length : 0;
+  const {registros:R, promotores:P} = getFiltered();
 
-  document.getElementById('kpi-p-total').textContent = formatNum(P.length);
-  document.getElementById('kpi-p-activos').textContent = formatNum(conVentas.length);
-  document.getElementById('kpi-p-comisiones').textContent = formatEuro(totalComisiones);
-  document.getElementById('kpi-p-topPromotor').textContent = topP ? (topP.Codigo || topP.Promotor || '—').substring(0,12) : '—';
-  document.getElementById('kpi-p-totalEntradas').textContent = formatNum(totalEntradas);
-  document.getElementById('kpi-p-avgComision').textContent = formatEuro(avgComision);
-
-  // Ranking chart top 15
-  const top15 = [...P].sort((a,b)=>(parseInt(b.Total_entradas)||0)-(parseInt(a.Total_entradas)||0)).slice(0,15);
-  makeChart('chartPromoterRanking', {
-    type:'bar',
-    data:{labels:top15.map(p=>p.Codigo||p.Promotor||'?'),
-          datasets:[{data:top15.map(p=>parseInt(p.Total_entradas)||0),
-                     backgroundColor:top15.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y'}
+  // Ranking from filtered registros
+  const cntByProm={}, revByProm={};
+  R.filter(r=>r.Promoter).forEach(r=>{
+    cntByProm[r.Promoter]=(cntByProm[r.Promoter]||0)+1;
+    revByProm[r.Promoter]=(revByProm[r.Promoter]||0)+parseEuro(r.Price);
   });
+  const rankData=sortObjByVal(cntByProm).slice(0,15);
+  const topPromoterName=rankData[0]?rankData[0][0]:'—';
+  const totalEntradas=Object.values(cntByProm).reduce((s,v)=>s+v,0);
+  const totalRev=Object.values(revByProm).reduce((s,v)=>s+v,0);
+  const conVentas=Object.keys(cntByProm).length;
 
-  // Podium
-  const podium = document.getElementById('podiumList');
-  podium.innerHTML = top15.map((p,i) => `
+  // Commissions from promotores dataset (historical)
+  const totalComisiones=P.reduce((s,p)=>s+parseEuro(p.Comision_real),0);
+
+  document.getElementById('kpi-p-total').textContent=formatNum(P.length);
+  document.getElementById('kpi-p-activos').textContent=formatNum(conVentas);
+  document.getElementById('kpi-p-comisiones').textContent=formatEuro(totalComisiones);
+  document.getElementById('kpi-p-topPromotor').textContent=topPromoterName.substring(0,14);
+  document.getElementById('kpi-p-totalEntradas').textContent=formatNum(totalEntradas);
+  document.getElementById('kpi-p-totalRev').textContent=formatEuro(totalRev);
+
+  makeChart('chartPromoterRanking',{type:'bar',data:{
+    labels:rankData.map(x=>x[0]),datasets:[{data:rankData.map(x=>x[1]),backgroundColor:rankData.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...barOpts,indexAxis:'y'}});
+
+  const podium=document.getElementById('podiumList');
+  podium.innerHTML=rankData.map((x,i)=>`
     <div class="rank-row">
       <div class="rank-num ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other'}">${i+1}</div>
-      <div><div class="rank-name">${(p.Promotor||'?').substring(0,28)}</div><div class="rank-code">${p.Codigo||''}</div></div>
-      <div><div class="rank-value">${parseInt(p.Total_entradas)||0} <small style="color:var(--text2);font-weight:400">ent.</small></div><div style="font-size:11px;color:var(--green)">${formatEuro(parseEuro(p.Importe_total))}</div></div>
+      <div><div class="rank-name">${x[0].substring(0,28)}</div><div class="rank-code">${x[1]} ventas</div></div>
+      <div><div class="rank-value">${formatEuro(revByProm[x[0]]||0)}</div></div>
     </div>`).join('');
 
-  // Commissions chart
-  const top15c = [...P].sort((a,b)=>parseEuro(b.Comision_real)-parseEuro(a.Comision_real)).slice(0,15);
-  makeChart('chartPromoterComissions', {
-    type:'bar',
-    data:{labels:top15c.map(p=>p.Codigo||p.Promotor||'?'),
-          datasets:[{data:top15c.map(p=>parseEuro(p.Comision_real)),backgroundColor:COLORS[4]+'cc',borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y'}
-  });
+  const top15c=[...P].sort((a,b)=>parseEuro(b.Comision_real)-parseEuro(a.Comision_real)).slice(0,15);
+  makeChart('chartPromoterComissions',{type:'bar',data:{
+    labels:top15c.map(p=>p.Codigo||p.Promotor||'?'),datasets:[{data:top15c.map(p=>parseEuro(p.Comision_real)),backgroundColor:COLORS[4]+'cc',borderRadius:6}]},
+    options:{...barOpts,indexAxis:'y'}});
 
-  // Online vs offline by promoter top 10
-  const top10 = [...P].sort((a,b)=>(parseInt(b.Total_entradas)||0)-(parseInt(a.Total_entradas)||0)).slice(0,10);
-  makeChart('chartPromoterChannels', {
-    type:'bar',
-    data:{labels:top10.map(p=>p.Codigo||p.Promotor||'?'),
-          datasets:[
-            {label:'Online',data:top10.map(p=>parseInt(p.Entradas_online)||0),backgroundColor:COLORS[0]+'cc',borderRadius:4},
-            {label:'Offline',data:top10.map(p=>parseInt(p.Entradas_offline)||0),backgroundColor:COLORS[1]+'cc',borderRadius:4}
-          ]},
-    options:{...defaultBarOpts, plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{size:11}}}}}
-  });
+  const top10=[...P].sort((a,b)=>(parseInt(b.Total_entradas)||0)-(parseInt(a.Total_entradas)||0)).slice(0,10);
+  makeChart('chartPromoterChannels',{type:'bar',data:{
+    labels:top10.map(p=>p.Codigo||p.Promotor||'?'),
+    datasets:[
+      {label:'Online',data:top10.map(p=>parseInt(p.Entradas_online)||0),backgroundColor:COLORS[0]+'cc',borderRadius:4},
+      {label:'Offline',data:top10.map(p=>parseInt(p.Entradas_offline)||0),backgroundColor:COLORS[1]+'cc',borderRadius:4}
+    ]},
+    options:{...barOpts,plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{size:11}}}}}});
 
   renderPromotersTable();
 }
 
 function renderPromotersTable() {
-  const filter = document.getElementById('filterPromoterStatus').value;
-  let P = DATA.promotores;
-  if (filter==='conVentas') P = P.filter(p=>parseEuro(p.Importe_total)>0);
-  else if (filter==='sinVentas') P = P.filter(p=>parseEuro(p.Importe_total)===0);
-  P = [...P].sort((a,b)=>parseEuro(b.Importe_total)-parseEuro(a.Importe_total));
-  renderTablePage('promotoresTable', P, 'promotoresTableBody', 'promotoresTableInfo', 'promotoresPagination', row => `
-    <tr>
-      <td>${row._rank||''}</td>
+  const filter=document.getElementById('filterPromoterStatus').value;
+  let P=[...DATA.promotores];
+  if(filter==='conVentas') P=P.filter(p=>parseEuro(p.Importe_total)>0);
+  else if(filter==='sinVentas') P=P.filter(p=>parseEuro(p.Importe_total)===0);
+  P=P.sort((a,b)=>parseEuro(b.Importe_total)-parseEuro(a.Importe_total));
+  renderTablePage('promotoresTable',P,'promotoresTableBody','promotoresTableInfo','promotoresPagination',
+    (row,i)=>`<tr>
+      <td>${i+1}</td>
       <td title="${row.Promotor||''}">${(row.Promotor||'—').substring(0,30)}</td>
       <td><span class="badge badge-purple">${row.Codigo||'—'}</span></td>
       <td style="text-align:center"><strong>${parseInt(row.Total_entradas)||0}</strong></td>
@@ -1116,315 +1141,178 @@ function renderPromotersTable() {
       <td>${parseInt(row.Entradas_online)||0}</td>
       <td>${parseInt(row.Entradas_offline)||0}</td>
       <td><span class="badge ${parseEuro(row.Importe_total)>0?'badge-green':'badge-gray'}">${parseEuro(row.Importe_total)>0?'Activo':'Sin ventas'}</span></td>
-    </tr>`, p => ({...p, _rank: DATA.promotores.indexOf(p)+1}));
+    </tr>`);
 }
 
-// =====================================================
+// ============================================================
 // LEADS
-// =====================================================
+// ============================================================
 function renderLeads() {
-  const F = DATA.formulario;
-  const comprados = F.filter(f=>f.Purchase==='YES'||f.Purchase==='SI'||f.Purchase==='yes').length;
-  const noComprados = F.length - comprados;
-  const conCodigo = F.filter(f=>f.Promoter_code&&f.Promoter_code.trim()).length;
-  const fuentes = countBy(F,'How_did_you_find_us');
-  const topFuente = sortObjByVal(fuentes)[0];
-  const conv = F.length>0?((comprados/F.length)*100).toFixed(1):0;
+  const {formulario:F} = getFiltered();
+  const fuentes=countBy(F,'How_did_you_find_us');
+  const topFuente=sortObjByVal(fuentes)[0];
+  const paises=new Set(F.filter(f=>f.Pais).map(f=>f.Pais)).size;
+  const styleCount={};
+  F.forEach(f=>{if(!f.Preferred_style)return;f.Preferred_style.split(',').forEach(s=>{const t=s.trim().replace(/^"|"$/g,'');if(t)styleCount[t]=(styleCount[t]||0)+1;});});
+  const topEstilo=sortObjByVal(styleCount)[0];
 
-  document.getElementById('kpi-l-total').textContent = formatNum(F.length);
-  document.getElementById('kpi-l-comprados').textContent = formatNum(comprados);
-  document.getElementById('kpi-l-noComprado').textContent = formatNum(noComprados);
-  document.getElementById('kpi-l-conversion').textContent = conv+'%';
-  document.getElementById('kpi-l-conCodigo').textContent = formatNum(conCodigo);
-  document.getElementById('kpi-l-topFuente').textContent = topFuente?topFuente[0].substring(0,12):'—';
+  document.getElementById('kpi-l-total').textContent=formatNum(F.length);
+  document.getElementById('kpi-l-topFuente').textContent=topFuente?(topFuente[0]).substring(0,12):'—';
+  document.getElementById('kpi-l-paises').textContent=formatNum(paises);
+  document.getElementById('kpi-l-topEstilo').textContent=topEstilo?topEstilo[0].substring(0,14):'—';
 
-  // Funnel
-  const funnelEl = document.getElementById('funnelChart');
-  const steps = [
-    {label:'Registros formulario', count:F.length, color:'#7c3aed'},
-    {label:'Con código promotor', count:conCodigo, color:'#ec4899'},
-    {label:'Han comprado', count:comprados, color:'#10b981'},
-  ];
-  const maxVal = steps[0].count || 1;
-  funnelEl.innerHTML = '<div class="funnel">' + steps.map(s=>`
-    <div class="funnel-step">
-      <div class="funnel-label">${s.label}</div>
-      <div class="funnel-bar-wrap">
-        <div class="funnel-bar" style="width:${(s.count/maxVal*100).toFixed(1)}%;background:${s.color}">${s.count>0?s.count:''}</div>
-      </div>
-      <div class="funnel-count">${formatNum(s.count)}</div>
-    </div>`).join('') + '</div>';
+  makeChart('chartHowFound',{type:'doughnut',data:{
+    labels:Object.keys(fuentes),datasets:[{data:Object.values(fuentes),backgroundColor:COLORS.slice(0,Object.keys(fuentes).length),borderWidth:0,hoverOffset:8}]},
+    options:{...donutOpts}});
 
-  // How found
-  makeChart('chartHowFound', {
-    type:'doughnut',
-    data:{labels:Object.keys(fuentes),datasets:[{data:Object.values(fuentes),backgroundColor:COLORS.slice(0,Object.keys(fuentes).length),borderWidth:0,hoverOffset:8}]},
-    options:{...defaultDoughnutOpts}
-  });
+  const {groups,useHours}=groupByTime(F,'Fecha_de_submit');
+  const ld=Object.keys(groups).sort();
+  makeChart('chartLeadsByDay',{type:'bar',data:{
+    labels:ld.map(k=>formatTimeLabel(k,useHours)),
+    datasets:[{data:ld.map(k=>groups[k].length),backgroundColor:COLORS[2]+'99',borderColor:COLORS[2],borderWidth:2,borderRadius:4}]},
+    options:{...barOpts}});
 
-  // Dance role
-  const roles = countBy(F,'Dance_role');
-  makeChart('chartDanceRole', {
-    type:'doughnut',
-    data:{labels:Object.keys(roles),datasets:[{data:Object.values(roles),backgroundColor:[COLORS[0],COLORS[1]],borderWidth:0}]},
-    options:{...defaultDoughnutOpts, plugins:{...defaultDoughnutOpts.plugins, legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}
-  });
+  const roles=countBy(F,'Dance_role');
+  makeChart('chartDanceRole',{type:'doughnut',data:{
+    labels:Object.keys(roles),datasets:[{data:Object.values(roles),backgroundColor:[COLORS[0],COLORS[1]],borderWidth:0}]},
+    options:{...donutOpts,plugins:{...donutOpts.plugins,legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}});
 
-  // Dance level
-  const levels = countBy(F,'Dance_level');
-  const levelOrder = ['Beginner','Intermediate','Advanced','Professional'];
-  const sortedLevels = [...levelOrder.filter(l=>levels[l]), ...Object.keys(levels).filter(l=>!levelOrder.includes(l))];
-  makeChart('chartDanceLevel', {
-    type:'bar',
-    data:{labels:sortedLevels,datasets:[{data:sortedLevels.map(l=>levels[l]||0),backgroundColor:sortedLevels.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts, plugins:{legend:{display:false}}}
-  });
+  const levels=countBy(F,'Dance_level');
+  const levelOrder=['Beginner','Intermediate','Advanced','Professional'];
+  const sortedLevels=[...levelOrder.filter(l=>levels[l]),...Object.keys(levels).filter(l=>!levelOrder.includes(l))];
+  makeChart('chartDanceLevel',{type:'bar',data:{
+    labels:sortedLevels,datasets:[{data:sortedLevels.map(l=>levels[l]||0),backgroundColor:sortedLevels.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...barOpts,plugins:{legend:{display:false}}}});
 
-  // Styles
-  const styleCount = {};
-  F.forEach(f=>{
-    if (!f.Preferred_style) return;
-    f.Preferred_style.split(',').forEach(s=>{
-      const t=s.trim().replace(/^"|"$/g,'');
-      if(t) styleCount[t]=(styleCount[t]||0)+1;
-    });
-  });
-  const topStyles = sortObjByVal(styleCount).slice(0,8);
-  makeChart('chartStyles', {
-    type:'bar',
-    data:{labels:topStyles.map(x=>x[0]),datasets:[{data:topStyles.map(x=>x[1]),backgroundColor:topStyles.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y', plugins:{legend:{display:false}}}
-  });
+  const topStyles=sortObjByVal(styleCount).slice(0,8);
+  makeChart('chartStyles',{type:'bar',data:{
+    labels:topStyles.map(x=>x[0]),datasets:[{data:topStyles.map(x=>x[1]),backgroundColor:topStyles.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...barOpts,indexAxis:'y',plugins:{legend:{display:false}}}});
 
-  // Leads by day
-  const leadsByDay = countBy(F.filter(f=>f.Fecha_de_submit), f=>f.Fecha_de_submit.substring(0,10));
-  const ld = Object.keys(leadsByDay).sort();
-  makeChart('chartLeadsByDay', {
-    type:'bar',
-    data:{labels:ld.map(d=>new Date(d).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})),
-          datasets:[{data:ld.map(d=>leadsByDay[d]),backgroundColor:COLORS[2]+'99',borderColor:COLORS[2],borderWidth:2,borderRadius:4}]},
-    options:{...defaultBarOpts}
-  });
-
-  // Lead promoter codes
-  const codigos = countBy(F.filter(f=>f.Promoter_code&&f.Promoter_code.trim()),'Promoter_code');
-  const topCod = sortObjByVal(codigos).slice(0,15);
-  const lpc = document.getElementById('leadPromoterCodes');
-  lpc.innerHTML = topCod.map(([name,val])=>`
-    <div class="prog-item">
-      <div class="prog-header"><span class="prog-name">${name}</span><span class="prog-val">${val}</span></div>
-      <div class="prog-bar-wrap"><div class="prog-bar" style="width:${(val/topCod[0][1]*100).toFixed(0)}%"></div></div>
-    </div>`).join('');
-
-  // Leads by country
-  const leadsCountry = countBy(F,'Pais');
-  const topLC = sortObjByVal(leadsCountry).slice(0,15);
-  makeChart('chartLeadsCountry', {
-    type:'bar',
-    data:{labels:topLC.map(x=>x[0]),datasets:[{data:topLC.map(x=>x[1]),backgroundColor:topLC.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y'}
-  });
+  const leadsCountry=countBy(F,'Pais');
+  const topLC=sortObjByVal(leadsCountry).slice(0,15);
+  makeChart('chartLeadsCountry',{type:'bar',data:{
+    labels:topLC.map(x=>x[0]),datasets:[{data:topLC.map(x=>x[1]),backgroundColor:topLC.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
+    options:{...barOpts,indexAxis:'y'}});
 }
 
-// =====================================================
+// ============================================================
 // DEMOGRAPHICS
-// =====================================================
+// ============================================================
 function renderDemographics() {
-  const R = DATA.registros;
-  const F = DATA.formulario;
+  const {registros:R,formulario:F}=getFiltered();
+  const genders=countBy(R,'Sex');
+  makeChart('chartGender',{type:'doughnut',data:{labels:Object.keys(genders),datasets:[{data:Object.values(genders),backgroundColor:[COLORS[2],COLORS[1],COLORS[0]],borderWidth:0}]},
+    options:{...donutOpts,plugins:{...donutOpts.plugins,legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}});
 
-  // Gender
-  const genders = countBy(R,'Sex');
-  makeChart('chartGender', {
-    type:'doughnut',
-    data:{labels:Object.keys(genders),datasets:[{data:Object.values(genders),backgroundColor:[COLORS[2],COLORS[1],COLORS[0]],borderWidth:0}]},
-    options:{...defaultDoughnutOpts, plugins:{...defaultDoughnutOpts.plugins, legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}
-  });
+  const roles=countBy(R,'Role');
+  makeChart('chartRole',{type:'doughnut',data:{labels:Object.keys(roles),datasets:[{data:Object.values(roles),backgroundColor:[COLORS[0],COLORS[1]],borderWidth:0}]},
+    options:{...donutOpts,plugins:{...donutOpts.plugins,legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}});
 
-  // Role
-  const roles = countBy(R,'Role');
-  makeChart('chartRole', {
-    type:'doughnut',
-    data:{labels:Object.keys(roles),datasets:[{data:Object.values(roles),backgroundColor:[COLORS[0],COLORS[1]],borderWidth:0}]},
-    options:{...defaultDoughnutOpts, plugins:{...defaultDoughnutOpts.plugins, legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}
-  });
+  const levels=countBy(F,'Dance_level');
+  makeChart('chartLevelDemog',{type:'doughnut',data:{labels:Object.keys(levels),datasets:[{data:Object.values(levels),backgroundColor:COLORS.slice(0,Object.keys(levels).length),borderWidth:0}]},
+    options:{...donutOpts,plugins:{...donutOpts.plugins,legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}});
 
-  // Level (from leads)
-  const levels = countBy(F,'Dance_level');
-  makeChart('chartLevelDemog', {
-    type:'doughnut',
-    data:{labels:Object.keys(levels),datasets:[{data:Object.values(levels),backgroundColor:COLORS.slice(0,Object.keys(levels).length),borderWidth:0}]},
-    options:{...defaultDoughnutOpts, plugins:{...defaultDoughnutOpts.plugins, legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10}}}}
-  });
+  const ml=R.filter(r=>r.Sex==='Male'&&r.Role==='Leader').length;
+  const mf=R.filter(r=>r.Sex==='Male'&&r.Role==='Follower').length;
+  const fl=R.filter(r=>r.Sex==='Female'&&r.Role==='Leader').length;
+  const ff=R.filter(r=>r.Sex==='Female'&&r.Role==='Follower').length;
+  makeChart('chartGenderByRole',{type:'bar',data:{labels:['Leader','Follower'],
+    datasets:[{label:'Male',data:[ml,mf],backgroundColor:COLORS[2]+'cc',borderRadius:6},{label:'Female',data:[fl,ff],backgroundColor:COLORS[1]+'cc',borderRadius:6}]},
+    options:{...barOpts,plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{size:11}}}}}});
 
-  // Gender by role stacked
-  const male_leader = R.filter(r=>r.Sex==='Male'&&r.Role==='Leader').length;
-  const male_follower = R.filter(r=>r.Sex==='Male'&&r.Role==='Follower').length;
-  const female_leader = R.filter(r=>r.Sex==='Female'&&r.Role==='Leader').length;
-  const female_follower = R.filter(r=>r.Sex==='Female'&&r.Role==='Follower').length;
-  makeChart('chartGenderByRole', {
-    type:'bar',
-    data:{labels:['Leader','Follower'],
-          datasets:[
-            {label:'Male',data:[male_leader,male_follower],backgroundColor:COLORS[2]+'cc',borderRadius:6},
-            {label:'Female',data:[female_leader,female_follower],backgroundColor:COLORS[1]+'cc',borderRadius:6}
-          ]},
-    options:{...defaultBarOpts, plugins:{legend:{display:true,labels:{color:'#94a3b8',font:{size:11}}}}}
-  });
-
-  // Balance visual
-  const leaders = roles['Leader']||0;
-  const followers = roles['Follower']||0;
-  const total = leaders+followers;
-  const bal = document.getElementById('leaderFollowerBalance');
-  const ratio = total>0 ? (leaders/total*100).toFixed(1) : 50;
-  bal.innerHTML = `
+  const leaders=roles['Leader']||0,followers=roles['Follower']||0,total=leaders+followers;
+  const ratio=total>0?(leaders/total*100).toFixed(1):50;
+  document.getElementById('leaderFollowerBalance').innerHTML=`
     <div style="text-align:center;margin-bottom:16px">
-      <div style="font-size:14px;color:var(--text2);margin-bottom:8px">Ratio Leaders / Followers</div>
-      <div style="font-size:36px;font-weight:800;background:linear-gradient(135deg,#7c3aed,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent">${ratio}% / ${(100-ratio).toFixed(1)}%</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:8px">Ratio Leaders / Followers</div>
+      <div style="font-size:32px;font-weight:800;background:linear-gradient(135deg,#7c3aed,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent">${ratio}% / ${(100-ratio).toFixed(1)}%</div>
     </div>
-    <div style="display:flex;border-radius:8px;overflow:hidden;height:32px;margin-bottom:12px">
+    <div style="display:flex;border-radius:8px;overflow:hidden;height:28px;margin-bottom:12px">
       <div style="width:${ratio}%;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">${leaders}</div>
       <div style="flex:1;background:#ec4899;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">${followers}</div>
     </div>
-    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2)">
-      <span style="color:#a78bfa">● Leaders: ${leaders}</span>
-      <span style="color:#f9a8d4">● Followers: ${followers}</span>
-    </div>
-    <div class="stat-row" style="margin-top:16px"><span class="stat-label">Total con rol</span><span class="stat-val">${total}</span></div>
-    <div class="stat-row"><span class="stat-label">Sin rol definido</span><span class="stat-val">${R.length-total}</span></div>
-    <div class="stat-row"><span class="stat-label">Hombres totales</span><span class="stat-val">${(genders['Male']||0)}</span></div>
-    <div class="stat-row"><span class="stat-label">Mujeres totales</span><span class="stat-val">${(genders['Female']||0)}</span></div>
-  `;
-  // capture genders locally for balance
-  const gendersLocal = countBy(R,'Sex');
-  bal.innerHTML = bal.innerHTML
-    .replace('${(genders[\'Male\']||0)}', gendersLocal['Male']||0)
-    .replace('${(genders[\'Female\']||0)}', gendersLocal['Female']||0);
+    <div class="stat-row"><span class="stat-label">Leaders</span><span class="stat-val" style="color:#a78bfa">${leaders}</span></div>
+    <div class="stat-row"><span class="stat-label">Followers</span><span class="stat-val" style="color:#f9a8d4">${followers}</span></div>
+    <div class="stat-row"><span class="stat-label">Hombres</span><span class="stat-val">${genders['Male']||0}</span></div>
+    <div class="stat-row"><span class="stat-label">Mujeres</span><span class="stat-val">${genders['Female']||0}</span></div>`;
 }
 
-// =====================================================
+// ============================================================
 // GEOGRAPHY
-// =====================================================
+// ============================================================
 function renderGeography() {
-  const R = DATA.registros;
-  const countries = countBy(R.filter(r=>r.Country),'Country');
-  const cities = countBy(R.filter(r=>r.City),'City');
-  const topCountry = sortObjByVal(countries)[0];
-  const topCity = sortObjByVal(cities)[0];
+  const {registros:R}=getFiltered();
+  const countries=countBy(R.filter(r=>r.Country),'Country');
+  const cities=countBy(R.filter(r=>r.City),'City');
+  const topCountry=sortObjByVal(countries)[0];
+  const topCity=sortObjByVal(cities)[0];
+  document.getElementById('kpi-g-paises').textContent=Object.keys(countries).length;
+  document.getElementById('kpi-g-ciudades').textContent=Object.keys(cities).length;
+  document.getElementById('kpi-g-topPais').textContent=topCountry?topCountry[0].substring(0,12):'—';
+  document.getElementById('kpi-g-topCiudad').textContent=topCity?topCity[0].substring(0,12):'—';
 
-  document.getElementById('kpi-g-paises').textContent = Object.keys(countries).length;
-  document.getElementById('kpi-g-ciudades').textContent = Object.keys(cities).length;
-  document.getElementById('kpi-g-topPais').textContent = topCountry?topCountry[0].substring(0,12):'—';
-  document.getElementById('kpi-g-topCiudad').textContent = topCity?topCity[0].substring(0,12):'—';
+  const topC=sortObjByVal(countries).slice(0,20);
+  makeChart('chartCountries',{type:'bar',data:{labels:topC.map(x=>x[0]),datasets:[{data:topC.map(x=>x[1]),backgroundColor:topC.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},options:{...barOpts,indexAxis:'y'}});
 
-  const topC = sortObjByVal(countries).slice(0,20);
-  makeChart('chartCountries', {
-    type:'bar',
-    data:{labels:topC.map(x=>x[0]),datasets:[{data:topC.map(x=>x[1]),backgroundColor:topC.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y'}
-  });
+  const topCit=sortObjByVal(cities).slice(0,20);
+  makeChart('chartCities',{type:'bar',data:{labels:topCit.map(x=>x[0]),datasets:[{data:topCit.map(x=>x[1]),backgroundColor:COLORS[2]+'cc',borderRadius:6}]},options:{...barOpts,indexAxis:'y'}});
 
-  const topCit = sortObjByVal(cities).slice(0,20);
-  makeChart('chartCities', {
-    type:'bar',
-    data:{labels:topCit.map(x=>x[0]),datasets:[{data:topCit.map(x=>x[1]),backgroundColor:COLORS[2]+'cc',borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y'}
-  });
-
-  // Revenue by country
-  const revByCountry = {};
-  R.filter(r=>r.Country).forEach(r=>{
-    revByCountry[r.Country]=(revByCountry[r.Country]||0)+parseEuro(r.Price);
-  });
-  const topRC = sortObjByVal(revByCountry).slice(0,15);
-  makeChart('chartRevenueByCountry', {
-    type:'bar',
-    data:{labels:topRC.map(x=>x[0]),datasets:[{data:topRC.map(x=>x[1]),backgroundColor:topRC.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y'}
-  });
+  const revByCountry={};
+  R.filter(r=>r.Country).forEach(r=>{revByCountry[r.Country]=(revByCountry[r.Country]||0)+parseEuro(r.Price);});
+  const topRC=sortObjByVal(revByCountry).slice(0,15);
+  makeChart('chartRevenueByCountry',{type:'bar',data:{labels:topRC.map(x=>x[0]),datasets:[{data:topRC.map(x=>x[1]),backgroundColor:topRC.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},options:{...barOpts,indexAxis:'y'}});
 }
 
-// =====================================================
+// ============================================================
 // TICKETS
-// =====================================================
+// ============================================================
 function renderTickets() {
-  const R = DATA.registros;
-  const activos = R.filter(r=>r.Status==='Active').length;
-  const escaneados = R.filter(r=>r.Scanned_date&&r.Scanned_date.trim()).length;
-  const cleanTicket = t => {
-    if (!t) return 'Desconocido';
-    if (t.includes('Full Pass')) return 'Full Pass';
-    if (t.includes('Follower Pro')) return 'Follower Pro';
-    if (t.includes('Follower Amateur')) return 'Follower Amateur';
-    if (t.includes('Leader Pro')) return 'Leader Pro';
-    if (t.includes('Leader Amateur')) return 'Leader Amateur';
-    if (t.includes('Room')||t.includes('room')||t.includes('Deluxe')||t.includes('Standard')) return 'Habitación';
-    return t.replace(/[✅🎫🏆]/g,'').trim().substring(0,30);
-  };
-  const ticketMap = R.map(r=>({...r,_ct:cleanTicket(r.Ticket)}));
-  const ticketCounts = countBy(ticketMap,'_ct');
-  const ticketTypes = Object.keys(ticketCounts).length;
+  const {registros:R}=getFiltered();
+  const activos=R.filter(r=>r.Status==='Active').length;
+  const escaneados=R.filter(r=>r.Scanned_date&&r.Scanned_date.trim()).length;
+  const ticketMap=R.map(r=>({...r,_ct:cleanTicket(r.Ticket)}));
+  const ticketCounts=countBy(ticketMap,'_ct');
 
-  document.getElementById('kpi-t-total').textContent = formatNum(R.length);
-  document.getElementById('kpi-t-activos').textContent = formatNum(activos);
-  document.getElementById('kpi-t-escaneados').textContent = formatNum(escaneados);
-  document.getElementById('kpi-t-tipos').textContent = ticketTypes;
+  document.getElementById('kpi-t-total').textContent=formatNum(R.length);
+  document.getElementById('kpi-t-activos').textContent=formatNum(activos);
+  document.getElementById('kpi-t-escaneados').textContent=formatNum(escaneados);
+  document.getElementById('kpi-t-tipos').textContent=Object.keys(ticketCounts).length;
 
-  const tSorted = sortObjByVal(ticketCounts);
-  makeChart('chartTicketDistrib', {
-    type:'bar',
-    data:{labels:tSorted.map(x=>x[0]),datasets:[{data:tSorted.map(x=>x[1]),backgroundColor:tSorted.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts, indexAxis:'y'}
-  });
+  const tSorted=sortObjByVal(ticketCounts);
+  makeChart('chartTicketDistrib',{type:'bar',data:{labels:tSorted.map(x=>x[0]),datasets:[{data:tSorted.map(x=>x[1]),backgroundColor:tSorted.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},options:{...barOpts,indexAxis:'y'}});
 
-  const statusCounts = countBy(R,'Status');
-  makeChart('chartTicketStatus', {
-    type:'doughnut',
-    data:{labels:Object.keys(statusCounts),datasets:[{data:Object.values(statusCounts),backgroundColor:[COLORS[3],COLORS[4],COLORS[5]],borderWidth:0,hoverOffset:8}]},
-    options:{...defaultDoughnutOpts}
-  });
+  const statusCounts=countBy(R,'Status');
+  makeChart('chartTicketStatus',{type:'doughnut',data:{labels:Object.keys(statusCounts),datasets:[{data:Object.values(statusCounts),backgroundColor:[COLORS[3],COLORS[4],COLORS[5]],borderWidth:0,hoverOffset:8}]},options:{...donutOpts}});
 
-  // Avg price by ticket type
-  const priceByTicket = {}; const cntTick = {};
-  R.forEach(r=>{
-    const t = cleanTicket(r.Ticket);
-    const p = parseEuro(r.Price);
-    if (p>0) { priceByTicket[t]=(priceByTicket[t]||0)+p; cntTick[t]=(cntTick[t]||0)+1; }
-  });
-  const avgByTicket = Object.keys(priceByTicket).map(t=>([t, priceByTicket[t]/cntTick[t]])).sort((a,b)=>b[1]-a[1]);
-  makeChart('chartTicketPrice', {
-    type:'bar',
-    data:{labels:avgByTicket.map(x=>x[0]),datasets:[{data:avgByTicket.map(x=>Math.round(x[1])),backgroundColor:avgByTicket.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},
-    options:{...defaultBarOpts}
-  });
+  const pBT={},cBT={};
+  R.forEach(r=>{const t=cleanTicket(r.Ticket),p=parseEuro(r.Price);if(p>0){pBT[t]=(pBT[t]||0)+p;cBT[t]=(cBT[t]||0)+1;}});
+  const avgByTicket=Object.keys(pBT).map(t=>[t,pBT[t]/cBT[t]]).sort((a,b)=>b[1]-a[1]);
+  makeChart('chartTicketPrice',{type:'bar',data:{labels:avgByTicket.map(x=>x[0]),datasets:[{data:avgByTicket.map(x=>Math.round(x[1])),backgroundColor:avgByTicket.map((_,i)=>getColor(i)+'cc'),borderRadius:6}]},options:{...barOpts}});
 }
 
-// =====================================================
-// RAW DATA TABLES
-// =====================================================
+// ============================================================
+// RAW DATA
+// ============================================================
 function renderRawData() {
-  // Registros table
-  const R = DATA.registros;
-  renderTablePage('registrosTable', R, 'registrosTableBody', 'registrosTableInfo', 'registrosPagination', row=>`
-    <tr>
+  const {registros:R,formulario:F}=getFiltered();
+  renderTablePage('registrosTable',R,'registrosTableBody','registrosTableInfo','registrosPagination',
+    (row)=>`<tr>
       <td><span class="badge badge-gray">${row.Locator||'—'}</span></td>
-      <td>${formatDate(row.Date)}</td>
+      <td title="${row.Date||''}">${formatDateTime(row.Date)}</td>
       <td title="${row.Full_name||''}">${(row.Full_name||'—').substring(0,22)}</td>
       <td title="${row.Email||''}">${(row.Email||'—').substring(0,22)}</td>
       <td>${row.Promoter?`<span class="badge badge-purple">${row.Promoter}</span>`:'—'}</td>
-      <td><span class="badge ${row.Sale_type==='goandance'?'badge-cyan':row.Sale_type&&row.Sale_type.includes('Online')||row.Sale_type==='promoterOnline'?'badge-purple':'badge-amber'}">${row.Sale_type||'—'}</span></td>
-      <td title="${row.Ticket||''}">${(row.Ticket||'—').replace(/[✅🎫🏆]/g,'').trim().substring(0,25)}</td>
+      <td><span class="badge badge-purple">${row.Sale_type||'—'}</span></td>
+      <td title="${row.Ticket||''}">${cleanTicket(row.Ticket).substring(0,25)}</td>
       <td style="color:var(--green);font-weight:700">${row.Price?formatEuro(parseEuro(row.Price)):'—'}</td>
       <td><span class="badge ${row.Status==='Active'?'badge-green':'badge-red'}">${row.Status||'—'}</span></td>
       <td>${row.Country||'—'}</td>
       <td>${row.Role||'—'}</td>
     </tr>`);
 
-  // Formulario table
-  const F = DATA.formulario;
-  renderTablePage('formularioTable', F, 'formularioTableBody', 'formularioTableInfo', 'formularioPagination', row=>`
-    <tr>
+  renderTablePage('formularioTable',F,'formularioTableBody','formularioTableInfo','formularioPagination',
+    (row)=>`<tr>
       <td>${(row.Full_name||row.Nombre||'—').substring(0,25)}</td>
       <td title="${row.Email||''}">${(row.Email||'—').substring(0,25)}</td>
       <td>${row.Pais||'—'}</td>
@@ -1432,150 +1320,123 @@ function renderRawData() {
       <td>${row.Dance_level||'—'}</td>
       <td>${row.How_did_you_find_us||'—'}</td>
       <td>${row.Promoter_code?`<span class="badge badge-purple">${row.Promoter_code}</span>`:'—'}</td>
-      <td><span class="badge ${row.Purchase==='YES'||row.Purchase==='SI'?'badge-green':'badge-red'}">${row.Purchase||'—'}</span></td>
-      <td>${formatDate(row.Fecha_de_submit)}</td>
+      <td title="${row.Fecha_de_submit||''}">${formatDateTime(row.Fecha_de_submit)}</td>
     </tr>`);
 }
 
-// =====================================================
-// PAGINATION TABLE ENGINE
-// =====================================================
-function renderTablePage(tableId, data, bodyId, infoId, pagId, rowRenderer, mapper=null, page=1) {
-  if (!tablePagination[tableId]) tablePagination[tableId] = {page:1, data:[], search:''};
-  tablePagination[tableId].data = data;
-  const state = tablePagination[tableId];
-  if (page) state.page = page;
+// ============================================================
+// TABLE ENGINE
+// ============================================================
+function renderTablePage(tableId,data,bodyId,infoId,pagId,rowRenderer,page) {
+  if(!tablePagination[tableId]) tablePagination[tableId]={page:1,search:''};
+  const state=tablePagination[tableId];
+  if(page) state.page=page;
+  state._data=data;
 
-  let filtered = data;
-  if (state.search) {
-    const q = state.search.toLowerCase();
-    filtered = data.filter(row => Object.values(row).some(v=>String(v).toLowerCase().includes(q)));
+  let filtered=data;
+  if(state.search){
+    const q=state.search.toLowerCase();
+    filtered=data.filter(row=>Object.values(row).some(v=>String(v).toLowerCase().includes(q)));
   }
 
-  const total = filtered.length;
-  const pages = Math.ceil(total/PAGE_SIZE);
-  const start = (state.page-1)*PAGE_SIZE;
-  const pageData = filtered.slice(start, start+PAGE_SIZE);
+  const total=filtered.length;
+  const pages=Math.ceil(total/PAGE_SIZE)||1;
+  if(state.page>pages) state.page=1;
+  const start=(state.page-1)*PAGE_SIZE;
+  const pageData=filtered.slice(start,start+PAGE_SIZE);
 
-  const body = document.getElementById(bodyId);
-  if (body) body.innerHTML = pageData.map((row,i) => rowRenderer(mapper?mapper(row,start+i):row, start+i)).join('');
+  const body=document.getElementById(bodyId);
+  if(body) body.innerHTML=pageData.map((row,i)=>rowRenderer(row,start+i)).join('');
 
-  const info = document.getElementById(infoId);
-  if (info) info.textContent = `Mostrando ${start+1}–${Math.min(start+PAGE_SIZE,total)} de ${total} registros`;
+  const info=document.getElementById(infoId);
+  if(info) info.textContent=`Mostrando ${total>0?start+1:0}–${Math.min(start+PAGE_SIZE,total)} de ${total}`;
 
-  const pag = document.getElementById(pagId);
-  if (pag) {
-    const maxPages = Math.min(pages, 7);
-    let btns = '';
-    const p = state.page;
-    if (p>1) btns+=`<div class="page-btn" onclick="goPage('${tableId}','${bodyId}','${infoId}','${pagId}',${p-1},arguments[0])">‹</div>`;
-    for (let i=Math.max(1,p-2);i<=Math.min(pages,p+2);i++) {
-      btns+=`<div class="page-btn${i===p?' active':''}" onclick="goPage('${tableId}','${bodyId}','${infoId}','${pagId}',${i},arguments[0])">${i}</div>`;
-    }
-    if (p<pages) btns+=`<div class="page-btn" onclick="goPage('${tableId}','${bodyId}','${infoId}','${pagId}',${p+1},arguments[0])">›</div>`;
-    pag.innerHTML = btns;
+  const pag=document.getElementById(pagId);
+  if(pag){
+    const p=state.page;
+    let btns='';
+    if(p>1) btns+=`<div class="page-btn" onclick="tablePage('${tableId}',${p-1})">‹</div>`;
+    for(let i=Math.max(1,p-2);i<=Math.min(pages,p+2);i++)
+      btns+=`<div class="page-btn${i===p?' active':''}" onclick="tablePage('${tableId}',${i})">${i}</div>`;
+    if(p<pages) btns+=`<div class="page-btn" onclick="tablePage('${tableId}',${p+1})">›</div>`;
+    pag.innerHTML=btns;
   }
 }
 
-function goPage(tableId, bodyId, infoId, pagId, page, e) {
-  if (!tablePagination[tableId]) return;
-  const state = tablePagination[tableId];
-  state.page = page;
-  // Re-render based on which table it is
-  if (tableId === 'registrosTable') renderTablePage(tableId, state.data, bodyId, infoId, pagId, row=>`<tr><td><span class="badge badge-gray">${row.Locator||'—'}</span></td><td>${formatDate(row.Date)}</td><td>${(row.Full_name||'—').substring(0,22)}</td><td>${(row.Email||'—').substring(0,22)}</td><td>${row.Promoter?`<span class="badge badge-purple">${row.Promoter}</span>`:'—'}</td><td><span class="badge badge-purple">${row.Sale_type||'—'}</span></td><td>${(row.Ticket||'—').replace(/[✅🎫🏆]/g,'').trim().substring(0,25)}</td><td style="color:var(--green);font-weight:700">${row.Price?formatEuro(parseEuro(row.Price)):'—'}</td><td><span class="badge ${row.Status==='Active'?'badge-green':'badge-red'}">${row.Status||'—'}</span></td><td>${row.Country||'—'}</td><td>${row.Role||'—'}</td></tr>`, null, page);
-  if (tableId === 'promotoresTable') renderPromotersTable();
-  if (tableId === 'formularioTable') renderTablePage(tableId, state.data, bodyId, infoId, pagId, row=>`<tr><td>${(row.Full_name||row.Nombre||'—').substring(0,25)}</td><td>${(row.Email||'—').substring(0,25)}</td><td>${row.Pais||'—'}</td><td>${row.Dance_role||'—'}</td><td>${row.Dance_level||'—'}</td><td>${row.How_did_you_find_us||'—'}</td><td>${row.Promoter_code?`<span class="badge badge-purple">${row.Promoter_code}</span>`:'—'}</td><td><span class="badge ${row.Purchase==='YES'||row.Purchase==='SI'?'badge-green':'badge-red'}">${row.Purchase||'—'}</span></td><td>${formatDate(row.Fecha_de_submit)}</td></tr>`, null, page);
+function tablePage(tableId,page){
+  const state=tablePagination[tableId];if(!state)return;
+  state.page=page;
+  if(tableId==='registrosTable') renderRawData();
+  else if(tableId==='promotoresTable') renderPromotersTable();
+  else if(tableId==='formularioTable') renderRawData();
 }
 
-function filterTable(tableId, query) {
-  if (!tablePagination[tableId]) return;
-  tablePagination[tableId].search = query;
-  tablePagination[tableId].page = 1;
-  // trigger re-render
-  if (tableId==='registrosTable') renderRawData();
-  if (tableId==='promotoresTable') renderPromotersTable();
-  if (tableId==='formularioTable') renderRawData();
+function filterTable(tableId,query){
+  if(!tablePagination[tableId]) tablePagination[tableId]={page:1,search:''};
+  tablePagination[tableId].search=query;
+  tablePagination[tableId].page=1;
+  if(tableId==='registrosTable'||tableId==='formularioTable') renderRawData();
+  else if(tableId==='promotoresTable') renderPromotersTable();
 }
 
-function filterRegistrosByType(type) {
-  let data = DATA.registros;
-  if (type) data = data.filter(r=>r.Sale_type&&r.Sale_type.toLowerCase().includes(type));
-  if (tablePagination['registrosTable']) tablePagination['registrosTable'].data = data;
+function filterRegistrosByType(type){
+  if(!tablePagination['registrosTable']) tablePagination['registrosTable']={page:1,search:''};
+  tablePagination['registrosTable']._typeFilter=type;
+  tablePagination['registrosTable'].page=1;
   renderRawData();
 }
 
-function sortTable(tableId, colIdx) {
-  // Simple sort toggle on rendered table rows
-  const table = document.getElementById(tableId);
-  if (!table) return;
-  const tbody = table.querySelector('tbody');
-  const rows = Array.from(tbody.querySelectorAll('tr'));
-  const asc = table.dataset.sortAsc === String(colIdx);
-  table.dataset.sortAsc = asc ? '' : String(colIdx);
+function sortTable(tableId,colIdx){
+  const table=document.getElementById(tableId);if(!table)return;
+  const tbody=table.querySelector('tbody');
+  const rows=Array.from(tbody.querySelectorAll('tr'));
+  const asc=table.dataset.sortAsc===String(colIdx);
+  table.dataset.sortAsc=asc?'':String(colIdx);
   rows.sort((a,b)=>{
-    const av = a.cells[colIdx]?.textContent.trim()||'';
-    const bv = b.cells[colIdx]?.textContent.trim()||'';
-    const an = parseFloat(av.replace(/[€.,\s]/g,''));
-    const bn = parseFloat(bv.replace(/[€.,\s]/g,''));
-    if (!isNaN(an)&&!isNaN(bn)) return asc?bn-an:an-bn;
+    const av=a.cells[colIdx]?.textContent.trim()||'';
+    const bv=b.cells[colIdx]?.textContent.trim()||'';
+    const an=parseFloat(av.replace(/[€.,\s]/g,''));
+    const bn=parseFloat(bv.replace(/[€.,\s]/g,''));
+    if(!isNaN(an)&&!isNaN(bn)) return asc?bn-an:an-bn;
     return asc?bv.localeCompare(av,'es'):av.localeCompare(bv,'es');
   });
   rows.forEach(r=>tbody.appendChild(r));
 }
 
-// =====================================================
+// ============================================================
 // EXPORT
-// =====================================================
-function exportData() {
-  const data = {
-    exportDate: new Date().toISOString(),
-    summary: {
-      totalVentas: DATA.registros.length,
-      totalIngresos: sumBy(DATA.registros,'Price'),
-      totalLeads: DATA.formulario.length,
-      totalPromotores: DATA.promotores.length
-    },
-    registros: DATA.registros,
-    promotores: DATA.promotores,
-    formulario: DATA.formulario
-  };
-  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href=url; a.download='esencia-paradise-data-'+new Date().toISOString().substring(0,10)+'.json';
-  a.click();
+// ============================================================
+function exportData(){
+  const {registros,promotores,formulario}=getFiltered();
+  const blob=new Blob([JSON.stringify({exportDate:new Date().toISOString(),filter:FILTER,registros,promotores,formulario},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='esencia-paradise-'+new Date().toISOString().substring(0,10)+'.json';a.click();
 }
 
-// =====================================================
-// DRAG & DROP UPLOADS
-// =====================================================
-['Registros','Promotores','Formulario'].forEach(name => {
-  const area = document.getElementById('uploadArea'+name);
-  if (!area) return;
-  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag'); });
-  area.addEventListener('dragleave', () => area.classList.remove('drag'));
-  area.addEventListener('drop', e => {
-    e.preventDefault(); area.classList.remove('drag');
-    const file = e.dataTransfer.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
-      uploadedCSVs[name.toLowerCase()] = parseCSV(ev.target.result);
+// ============================================================
+// DRAG & DROP
+// ============================================================
+['Registros','Promotores','Formulario'].forEach(name=>{
+  const area=document.getElementById('uploadArea'+name);if(!area)return;
+  area.addEventListener('dragover',e=>{e.preventDefault();area.classList.add('drag');});
+  area.addEventListener('dragleave',()=>area.classList.remove('drag'));
+  area.addEventListener('drop',e=>{
+    e.preventDefault();area.classList.remove('drag');
+    const file=e.dataTransfer.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      uploadedCSVs[name.toLowerCase()]=parseCSV(ev.target.result);
       area.style.background='rgba(16,185,129,.1)';area.style.borderColor='#10b981';
-      area.querySelector('p').textContent='✓ '+file.name;
-      checkUploadReady();
+      area.querySelector('p').textContent='✓ '+file.name;checkUploadReady();
     };
     reader.readAsText(file,'UTF-8');
   });
 });
 
-// =====================================================
+// ============================================================
 // INIT
-// =====================================================
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('loadingText').textContent = 'Conectando con n8n...';
-  refreshData();
-});
+// ============================================================
+window.addEventListener('DOMContentLoaded',()=>refreshData());
 </script>
 </body>
 </html>
