@@ -194,6 +194,10 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .upload-area p{font-size:13px;color:var(--text2)}
 .upload-area small{font-size:11px;color:var(--text3)}
 
+/* ── TOPBAR LOGO MOBILE ── */
+.topbar-logo-mobile{display:none;height:36px;object-fit:contain;max-width:120px}
+.topbar-title-text{font-size:18px;font-weight:700;background:linear-gradient(135deg,#a78bfa,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
 /* ── MOBILE DRAWER ── */
 .hamburger{display:none;background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color .2s}
 .hamburger:hover{color:var(--text)}
@@ -232,11 +236,16 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
   /* Topbar */
   .topbar{padding:10px 14px}
   .topbar-left .sub{display:none}
-  .topbar-left h1{font-size:15px}
+  .topbar-title-text{display:none}
+  .topbar-logo-mobile{display:block}
   .btn span,.btn-txt{display:none}
   .btn{padding:8px 10px}
   .status-badge span{display:none}
   .status-badge{padding:6px 8px}
+
+  /* Filter bar mobile: hide preset chips, show only Todo + datetime */
+  .desktop-chip{display:none!important}
+  .filter-bar-collapse{max-height:none!important;overflow:visible!important}
 
   /* Filter bar — two rows, chips scroll horizontally */
   .filter-bar{
@@ -357,7 +366,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
       <div style="display:flex;align-items:center;gap:10px">
         <button class="hamburger" onclick="toggleDrawer()" aria-label="Menú"><i class="fas fa-bars"></i></button>
         <div class="topbar-left">
-          <h1>Esencia Paradise Dashboard</h1>
+          <h1 class="topbar-title-text">Esencia Paradise Dashboard</h1>
+          <img class="topbar-logo-mobile" src="https://esenciaparadise.com/wp-content/uploads/2025/10/IMG_6016.png" alt="Esencia Paradise" onerror="this.style.display='none'">
           <div class="sub">Panel de análisis del evento en tiempo real</div>
         </div>
       </div>
@@ -374,17 +384,17 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
       <div class="filter-bar-row1">
         <span class="filter-bar-label"><i class="fas fa-clock"></i></span>
         <div class="preset-chips">
-          <div class="chip" onclick="applyPreset(1/24,this)">1h</div>
-          <div class="chip" onclick="applyPreset(2/24,this)">2h</div>
-          <div class="chip" onclick="applyPreset(6/24,this)">6h</div>
-          <div class="chip" onclick="applyPreset(12/24,this)">12h</div>
-          <div class="chip" onclick="applyPreset(1,this)">24h</div>
-          <div class="chip" onclick="applyPreset(3,this)">3d</div>
-          <div class="chip" onclick="applyPreset(7,this)">7d</div>
-          <div class="chip" onclick="applyPreset(30,this)">30d</div>
+          <div class="chip desktop-chip" onclick="applyPreset(1/24,this)">1h</div>
+          <div class="chip desktop-chip" onclick="applyPreset(2/24,this)">2h</div>
+          <div class="chip desktop-chip" onclick="applyPreset(6/24,this)">6h</div>
+          <div class="chip desktop-chip" onclick="applyPreset(12/24,this)">12h</div>
+          <div class="chip desktop-chip" onclick="applyPreset(1,this)">24h</div>
+          <div class="chip desktop-chip" onclick="applyPreset(3,this)">3d</div>
+          <div class="chip desktop-chip" onclick="applyPreset(7,this)">7d</div>
+          <div class="chip desktop-chip" onclick="applyPreset(30,this)">30d</div>
           <div class="chip active" onclick="applyPreset(null,this)">Todo</div>
         </div>
-        <button class="btn btn-ghost" style="padding:5px 8px;font-size:11px;margin-left:auto;white-space:nowrap" onclick="toggleFilterAdvanced()" id="filterAdvBtn">
+        <button class="btn btn-ghost desktop-chip" style="padding:5px 8px;font-size:11px;margin-left:auto;white-space:nowrap" onclick="toggleFilterAdvanced()" id="filterAdvBtn">
           <i class="fas fa-sliders-h"></i> <span class="btn-txt">Avanzado</span>
         </button>
       </div>
