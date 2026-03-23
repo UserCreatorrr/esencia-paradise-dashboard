@@ -194,17 +194,104 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .upload-area p{font-size:13px;color:var(--text2)}
 .upload-area small{font-size:11px;color:var(--text3)}
 
-/* RESPONSIVE */
+/* ── MOBILE DRAWER ── */
+.hamburger{display:none;background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color .2s}
+.hamburger:hover{color:var(--text)}
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:40;backdrop-filter:blur(2px)}
+.drawer-overlay.open{display:block}
+.sidebar.drawer-open{transform:translateX(0)!important}
+
+/* ── MOBILE BOTTOM NAV ── */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--sidebar);border-top:1px solid var(--border);z-index:30;padding:0 4px;padding-bottom:env(safe-area-inset-bottom)}
+.bottom-nav-inner{display:flex;justify-content:space-around;align-items:center}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px;cursor:pointer;color:var(--text3);font-size:10px;font-weight:600;min-width:48px;border-radius:8px;transition:color .2s}
+.bnav-item i{font-size:18px}
+.bnav-item.active{color:var(--primary-light)}
+.bnav-more-panel{display:none;position:fixed;bottom:56px;left:0;right:0;background:var(--sidebar);border-top:1px solid var(--border);z-index:29;padding:8px}
+.bnav-more-panel.open{display:block}
+.bnav-more-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.bnav-more-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;cursor:pointer;color:var(--text2);font-size:10px;font-weight:600;border-radius:8px;background:var(--card2);border:1px solid var(--border)}
+.bnav-more-item i{font-size:16px}
+.bnav-more-item.active{color:var(--primary-light);border-color:var(--primary)}
+
+/* ── MOBILE FILTER BAR ── */
+.filter-bar-toggle{display:none;width:100%;background:none;border:none;color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;padding:8px 0;text-align:left;display:flex;align-items:center;justify-content:space-between}
+.filter-bar-body{display:contents}
+
+/* ── RESPONSIVE ── */
 @media(max-width:900px){
-  .sidebar{display:none}
+  /* Sidebar becomes a slide-in drawer */
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;z-index:50;
+    transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);
+    box-shadow:4px 0 24px rgba(0,0,0,.5)
+  }
+  .hamburger{display:block}
+  .drawer-overlay{display:none}
+
+  /* Topbar */
+  .topbar{padding:10px 14px}
+  .topbar-left .sub{display:none}
+  .topbar-left h1{font-size:15px}
+  .btn span,.btn-txt{display:none}
+  .btn{padding:8px 10px}
+  .status-badge span{display:none}
+  .status-badge{padding:6px 8px}
+
+  /* Filter bar — two rows, chips scroll horizontally */
+  .filter-bar{
+    padding:8px 12px;gap:8px;
+    flex-direction:column;align-items:stretch
+  }
+  .filter-bar-row1{display:flex;align-items:center;gap:8px}
+  .filter-bar-row2{display:flex;flex-direction:column;gap:6px}
+  .preset-chips{overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+  .preset-chips::-webkit-scrollbar{height:2px}
+  .filter-divider{display:none}
+  .filter-custom{flex-wrap:nowrap;overflow-x:auto;gap:8px}
+  .filter-promoter-wrap{margin-left:0;justify-content:flex-start}
+  .filter-select{max-width:100%;width:100%}
+  .filter-dt{font-size:11px;padding:4px 6px}
+  .filter-bar-collapse{overflow:hidden;transition:max-height .3s ease;max-height:0}
+  .filter-bar-collapse.open{max-height:200px}
+
+  /* Grids */
   .chart-grid-2,.chart-grid-3,.chart-grid-21{grid-template-columns:1fr}
-  .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .filter-bar{padding:10px 12px}
-  .filter-promoter-wrap{margin-left:0}
+  .kpi-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+
+  /* Charts shorter on mobile */
+  .chart-wrapper[style*="height:400px"]{height:280px!important}
+  .chart-wrapper[style*="height:350px"]{height:240px!important}
+  .chart-wrapper[style*="height:320px"]{height:220px!important}
+  .chart-wrapper[style*="height:280px"]{height:200px!important}
+  .chart-wrapper[style*="height:260px"]{height:200px!important}
+  .chart-wrapper[style*="height:250px"]{height:200px!important}
+  .chart-wrapper[style*="height:240px"]{height:180px!important}
+  .chart-wrapper[style*="height:220px"]{height:160px!important}
+  .chart-wrapper[style*="height:200px"]{height:160px!important}
+  .chart-wrapper[style*="height:180px"]{height:150px!important}
+
+  /* Upload section */
+  #tab-upload [style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr!important}
+
+  /* Bottom nav visible */
+  .bottom-nav{display:flex;flex-direction:column}
+  /* Add padding to content so bottom nav doesn't cover it */
+  .content{padding-bottom:80px}
+
+  /* Section titles */
+  .section-title{font-size:17px}
 }
+
 @media(max-width:500px){
-  .kpi-grid{grid-template-columns:1fr}
-  .content{padding:12px}
+  .kpi-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .kpi-value{font-size:22px}
+  .kpi-card{padding:12px}
+  .content{padding:12px;padding-bottom:80px}
+  .topbar{padding:8px 12px}
+  .chart-card{padding:14px}
+  .table-controls{flex-direction:column;align-items:flex-start}
+  .search-box input{width:160px}
 }
 </style>
 </head>
@@ -213,6 +300,30 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
   <div class="loading-text" id="loadingText">Conectando con n8n...</div>
+</div>
+
+<!-- DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <div class="bnav-item active" id="bnav-overview" onclick="mobileTab('overview',this)"><i class="fas fa-chart-pie"></i>Overview</div>
+    <div class="bnav-item" id="bnav-sales" onclick="mobileTab('sales',this)"><i class="fas fa-euro-sign"></i>Ventas</div>
+    <div class="bnav-item" id="bnav-promotores" onclick="mobileTab('promotores',this)"><i class="fas fa-users"></i>Promotores</div>
+    <div class="bnav-item" id="bnav-leads" onclick="mobileTab('leads',this)"><i class="fas fa-funnel-dollar"></i>Leads</div>
+    <div class="bnav-item" id="bnav-more" onclick="toggleMoreMenu(this)"><i class="fas fa-ellipsis-h"></i>Más</div>
+  </div>
+</nav>
+<!-- MORE MENU panel -->
+<div class="bnav-more-panel" id="bnavMorePanel">
+  <div class="bnav-more-grid">
+    <div class="bnav-more-item" id="bnav-demographics" onclick="mobileTab('demographics',this)"><i class="fas fa-venus-mars"></i>Demografía</div>
+    <div class="bnav-more-item" id="bnav-geography" onclick="mobileTab('geography',this)"><i class="fas fa-globe-europe"></i>Geografía</div>
+    <div class="bnav-more-item" id="bnav-tickets" onclick="mobileTab('tickets',this)"><i class="fas fa-ticket-alt"></i>Tickets</div>
+    <div class="bnav-more-item" id="bnav-rawdata" onclick="mobileTab('rawdata',this)"><i class="fas fa-table"></i>Datos</div>
+    <div class="bnav-more-item" id="bnav-upload" onclick="mobileTab('upload',this)"><i class="fas fa-upload"></i>CSV</div>
+  </div>
 </div>
 
 <div class="layout">
@@ -243,49 +354,62 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
   <div class="main">
     <!-- TOPBAR -->
     <div class="topbar">
-      <div class="topbar-left">
-        <h1>Esencia Paradise Dashboard</h1>
-        <div class="sub">Panel de análisis del evento en tiempo real</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="hamburger" onclick="toggleDrawer()" aria-label="Menú"><i class="fas fa-bars"></i></button>
+        <div class="topbar-left">
+          <h1>Esencia Paradise Dashboard</h1>
+          <div class="sub">Panel de análisis del evento en tiempo real</div>
+        </div>
       </div>
       <div class="topbar-right">
         <span class="status-badge loading" id="statusBadge"><i class="fas fa-circle"></i> <span id="statusText">Cargando</span></span>
-        <button class="btn btn-ghost" onclick="refreshData()"><i class="fas fa-sync-alt" id="refreshIcon"></i> Actualizar</button>
-        <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i> Exportar</button>
+        <button class="btn btn-ghost" onclick="refreshData()"><i class="fas fa-sync-alt" id="refreshIcon"></i> <span class="btn-txt">Actualizar</span></button>
+        <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i> <span class="btn-txt">Exportar</span></button>
       </div>
     </div>
 
     <!-- TIME FILTER BAR -->
     <div class="filter-bar">
-      <span class="filter-bar-label"><i class="fas fa-clock"></i> Período</span>
-      <div class="preset-chips">
-        <div class="chip" onclick="applyPreset(1/24,this)" title="Última hora">1h</div>
-        <div class="chip" onclick="applyPreset(2/24,this)" title="Últimas 2 horas">2h</div>
-        <div class="chip" onclick="applyPreset(6/24,this)" title="Últimas 6 horas">6h</div>
-        <div class="chip" onclick="applyPreset(12/24,this)" title="Últimas 12 horas">12h</div>
-        <div class="chip" onclick="applyPreset(1,this)" title="Últimas 24 horas">24h</div>
-        <div class="chip" onclick="applyPreset(3,this)" title="Últimos 3 días">3d</div>
-        <div class="chip" onclick="applyPreset(7,this)" title="Últimos 7 días">7d</div>
-        <div class="chip" onclick="applyPreset(30,this)" title="Últimos 30 días">30d</div>
-        <div class="chip active" onclick="applyPreset(null,this)" title="Todo el histórico">Todo</div>
+      <!-- Row 1: always visible — chips + toggle button -->
+      <div class="filter-bar-row1">
+        <span class="filter-bar-label"><i class="fas fa-clock"></i></span>
+        <div class="preset-chips">
+          <div class="chip" onclick="applyPreset(1/24,this)">1h</div>
+          <div class="chip" onclick="applyPreset(2/24,this)">2h</div>
+          <div class="chip" onclick="applyPreset(6/24,this)">6h</div>
+          <div class="chip" onclick="applyPreset(12/24,this)">12h</div>
+          <div class="chip" onclick="applyPreset(1,this)">24h</div>
+          <div class="chip" onclick="applyPreset(3,this)">3d</div>
+          <div class="chip" onclick="applyPreset(7,this)">7d</div>
+          <div class="chip" onclick="applyPreset(30,this)">30d</div>
+          <div class="chip active" onclick="applyPreset(null,this)">Todo</div>
+        </div>
+        <button class="btn btn-ghost" style="padding:5px 8px;font-size:11px;margin-left:auto;white-space:nowrap" onclick="toggleFilterAdvanced()" id="filterAdvBtn">
+          <i class="fas fa-sliders-h"></i> <span class="btn-txt">Avanzado</span>
+        </button>
       </div>
-      <div class="filter-divider"></div>
-      <div class="filter-custom">
-        <label>Desde</label>
-        <input type="datetime-local" class="filter-dt" id="filterFrom" onchange="applyCustomRange()">
-        <label>Hasta</label>
-        <input type="datetime-local" class="filter-dt" id="filterTo" onchange="applyCustomRange()">
+      <!-- Row 2: collapsible advanced filters -->
+      <div class="filter-bar-collapse" id="filterAdvanced">
+      <div class="filter-bar-row2">
+        <div class="filter-custom">
+          <label>Desde</label>
+          <input type="datetime-local" class="filter-dt" id="filterFrom" onchange="applyCustomRange()">
+          <label>Hasta</label>
+          <input type="datetime-local" class="filter-dt" id="filterTo" onchange="applyCustomRange()">
+        </div>
+        <div class="filter-promoter-wrap">
+          <label><i class="fas fa-user-tie"></i> Promotor</label>
+          <select class="filter-select" id="filterPromoterGlobal" onchange="applyPromoterFilter()">
+            <option value="">Todos los promotores</option>
+          </select>
+        </div>
       </div>
-      <div class="filter-divider"></div>
-      <div class="filter-promoter-wrap">
-        <label><i class="fas fa-user-tie"></i> Promotor</label>
-        <select class="filter-select" id="filterPromoterGlobal" onchange="applyPromoterFilter()">
-          <option value="">Todos los promotores</option>
-        </select>
-      </div>
+      </div><!-- /filter-bar-collapse -->
+      <!-- Active filter badge (always visible below chips on mobile) -->
       <div id="activeFilterBadge" style="display:none">
         <span class="active-filter-badge" id="activeFilterText">—</span>
       </div>
-    </div>
+    </div><!-- /filter-bar -->
 
     <!-- CONTENT -->
     <div class="content">
@@ -653,6 +777,13 @@ function showTab(name, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   if (el) el.classList.add('active');
+  // Sync bottom nav
+  document.querySelectorAll('.bnav-item,.bnav-more-item').forEach(b => b.classList.remove('active'));
+  const bnavEl = document.getElementById('bnav-' + name);
+  if (bnavEl) bnavEl.classList.add('active');
+  // Close drawer on mobile after navigation
+  const sidebar = document.querySelector('.sidebar');
+  if (sidebar.classList.contains('drawer-open')) toggleDrawer();
 }
 
 // ============================================================
@@ -1432,6 +1563,65 @@ function exportData(){
     reader.readAsText(file,'UTF-8');
   });
 });
+
+// ============================================================
+// MOBILE DRAWER
+// ============================================================
+function toggleDrawer() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('drawerOverlay');
+  const isOpen = sidebar.classList.contains('drawer-open');
+  sidebar.classList.toggle('drawer-open', !isOpen);
+  overlay.classList.toggle('open', !isOpen);
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+
+// ============================================================
+// MOBILE BOTTOM NAV
+// ============================================================
+function mobileTab(name, el) {
+  // Close more panel
+  document.getElementById('bnavMorePanel').classList.remove('open');
+  // Switch tab
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  // Update sidebar active state
+  const sidebarItem = [...document.querySelectorAll('.nav-item')].find(n => n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + name + "'"));
+  if (sidebarItem) sidebarItem.classList.add('active');
+  // Update bottom nav
+  document.querySelectorAll('.bnav-item,.bnav-more-item').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+function toggleMoreMenu(el) {
+  const panel = document.getElementById('bnavMorePanel');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+  if (!isOpen) el.classList.add('active');
+}
+
+// Close more panel when tapping outside
+document.addEventListener('click', e => {
+  const panel = document.getElementById('bnavMorePanel');
+  const moreBtn = document.getElementById('bnav-more');
+  if (panel && !panel.contains(e.target) && moreBtn && !moreBtn.contains(e.target)) {
+    panel.classList.remove('open');
+  }
+});
+
+// ============================================================
+// FILTER ADVANCED TOGGLE
+// ============================================================
+function toggleFilterAdvanced() {
+  const panel = document.getElementById('filterAdvanced');
+  const btn = document.getElementById('filterAdvBtn');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  btn.style.color = isOpen ? '' : 'var(--primary-light)';
+  btn.style.borderColor = isOpen ? '' : 'var(--primary)';
+}
 
 // ============================================================
 // INIT
